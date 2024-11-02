@@ -5,7 +5,7 @@ public class User {
     String name;
     String email;
     String password;
-    Integer houseId; // Nullable
+    Integer familyId; // Nullable
 
     public User() {
     }
@@ -16,12 +16,12 @@ public class User {
         this.password = password;
     }
 
-    public User(int id, String name, String email, String password, Integer houseId) {
+    public User(int id, String name, String email, String password, Integer familyId) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.houseId = houseId;
+        this.familyId = familyId;
     }
 
     public int getId() {
@@ -56,11 +56,11 @@ public class User {
         this.password = password;
     }
 
-    public Integer getHouseId() {
-        return houseId;
+    public Integer getFamilyId() {
+        return familyId;
     }
 
-    public void setFamilyId(Integer houseId) {
-        this.houseId = houseId;
+    public void setFamilyId(Integer familyId) {
+        this.familyId = familyId;
     }
 }
