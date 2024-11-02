@@ -25,7 +25,7 @@ public class UserController {
     public ResponseEntity<User> getUser(@PathVariable int id) {
         try {
             User user = userService.getOne(id);
-            return ResponseEntity.ok(user);
+            return ResponseEntity.status(HttpStatus.OK).body(user);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -37,7 +37,7 @@ public class UserController {
         if (users.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
-        return ResponseEntity.ok(users);
+        return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
     @PostMapping
@@ -54,7 +54,7 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody UpdateUser updateUser) {
         try {
             User user = userService.update(id, updateUser);
-            return ResponseEntity.ok(user);
+            return ResponseEntity.status(HttpStatus.OK).body(user);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {
@@ -66,7 +66,7 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         try {
             userService.delete(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {

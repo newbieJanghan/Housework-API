@@ -1,7 +1,6 @@
 package com.ssafy.housework.model.familyMember;
 
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
-import com.ssafy.housework.model.family.dto.UpdateFamily;
 import com.ssafy.housework.model.familyMember.dto.CreateFamilyMember;
 import com.ssafy.housework.model.familyMember.dto.FamilyMember;
 import com.ssafy.housework.model.familyMember.dto.UpdateFamilyMember;
@@ -23,7 +22,12 @@ public class FamilyMemberService {
     }
 
     public FamilyMember getOne(int id) {
-        return familyMemberDao.selectOne(id);
+        FamilyMember familyMember = familyMemberDao.selectOne(id);
+        if (familyMember == null) {
+            throw new ResourceNotFoundException("Family member not found with id: " + id);
+        }
+
+        return familyMember;
     }
 
     public List<FamilyMember> getAll() {

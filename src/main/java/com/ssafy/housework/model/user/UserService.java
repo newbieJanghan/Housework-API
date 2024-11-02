@@ -22,7 +22,12 @@ public class UserService {
     }
 
     public User getOne(int id) {
-        return userDao.selectOne(id);
+        User user = userDao.selectOne(id);
+        if (user == null) {
+            throw new ResourceNotFoundException("User not found with id: " + id);
+        }
+
+        return user;
     }
 
     public List<User> getAll() {

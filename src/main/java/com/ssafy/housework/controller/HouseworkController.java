@@ -25,7 +25,7 @@ public class HouseworkController {
     public ResponseEntity<Housework> getHousework(@PathVariable int id) {
         try {
             Housework housework = houseworkService.getOne(id);
-            return ResponseEntity.ok(housework);
+            return ResponseEntity.status(HttpStatus.OK).body(housework);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -37,7 +37,7 @@ public class HouseworkController {
         if (houseworks.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
-        return ResponseEntity.ok(houseworks);
+        return ResponseEntity.status(HttpStatus.OK).body(houseworks);
     }
 
     @PostMapping
@@ -54,7 +54,7 @@ public class HouseworkController {
     public ResponseEntity<Housework> updateHousework(@PathVariable int id, @RequestBody UpdateHousework updateHousework) {
         try {
             Housework housework = houseworkService.update(id, updateHousework);
-            return ResponseEntity.ok(housework);
+            return ResponseEntity.status(HttpStatus.OK).body(housework);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {
@@ -66,7 +66,7 @@ public class HouseworkController {
     public ResponseEntity<Void> deleteHousework(@PathVariable int id) {
         try {
             houseworkService.delete(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {

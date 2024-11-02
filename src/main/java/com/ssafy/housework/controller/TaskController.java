@@ -25,7 +25,7 @@ public class TaskController {
     public ResponseEntity<Task> getTask(@PathVariable int id) {
         try {
             Task task = taskService.getOne(id);
-            return ResponseEntity.ok(task);
+            return ResponseEntity.status(HttpStatus.OK).body(task);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -37,7 +37,7 @@ public class TaskController {
         if (tasks.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
-        return ResponseEntity.ok(tasks);
+        return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
 
     @PostMapping
@@ -54,7 +54,7 @@ public class TaskController {
     public ResponseEntity<Task> updateTask(@PathVariable int id, @RequestBody UpdateTask updateTask) {
         try {
             Task task = taskService.update(id, updateTask);
-            return ResponseEntity.ok(task);
+            return ResponseEntity.status(HttpStatus.OK).body(task);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {
@@ -66,7 +66,7 @@ public class TaskController {
     public ResponseEntity<Task> finishTask(@PathVariable int id) {
         try {
             Task task = taskService.finishTask(id);
-            return ResponseEntity.ok(task);
+            return ResponseEntity.status(HttpStatus.OK).body(task);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {
@@ -78,11 +78,11 @@ public class TaskController {
     public ResponseEntity<Void> deleteTask(@PathVariable int id) {
         try {
             taskService.delete(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }
