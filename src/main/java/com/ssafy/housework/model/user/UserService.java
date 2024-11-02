@@ -1,13 +1,9 @@
 package com.ssafy.housework.model.user;
 
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
-import com.ssafy.housework.model.family.FamilyDao;
 import com.ssafy.housework.model.user.dto.CreateUser;
 import com.ssafy.housework.model.user.dto.UpdateUser;
 import com.ssafy.housework.model.user.dto.User;
-import com.ssafy.housework.model.family.dto.Family;
-import org.apache.ibatis.jdbc.SQL;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
 
