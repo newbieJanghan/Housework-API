@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.housework.model.housework.HouseworkDao">
+    <select id="selectOne" resultType="Housework">
+        SELECT * FROM houseworks WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="Housework">
+        SELECT * FROM houseworks
+    </select>
+
+    <insert id="insert" parameterType="Housework" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO houseworks (name, category)
+        VALUES (#{name}, #{category})
+    </insert>
+
+    <update id="update" parameterType="Housework">
+        UPDATE houseworks
+        SET name = #{name}, category = #{category}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM houseworks WHERE id = #{id}
+    </delete>
+</mapper>

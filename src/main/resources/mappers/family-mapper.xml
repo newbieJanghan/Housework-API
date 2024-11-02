@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.housework.model.family.FamilyDao">
+    <resultMap id="FamilyResultMap" type="Family">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="desc" column="desc"/>
+        <collection property="members" ofType="FamilyMember">
+            <id property="id" column="member_id"/>
+            <result property="userId" column="user_id"/>
+            <result property="familyId" column="family_id"/>
+            <result property="role" column="role"/>
+            <collection property="tasks" ofType="Task">
+                <id property="id" column="task_id"/>
+                <result property="familyId" column="family_id"/>
+                <result property="familyMemberId" column="family_member_id"/>
+                <result property="houseworkId" column="housework_id"/>
+                <result property="dueAt" column="due_at"/>
+                <result property="doneAt" column="done_at"/>
+                <association property="housework" javaType="Housework">
+                    <id property="id" column="housework_id"/>
+                    <result property="name" column="housework_name"/>
+                    <result property="category" column="housework_category"/>
+                </association>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="selectOne" resultMap="FamilyResultMap">
+        SELECT f.*, fm.id AS member_id, fm.user_id, fm.family_id, fm.role,
+               t.id AS task_id, t.family_id, t.family_member_id, t.housework_id, t.due_at, t.done_at,
+               h.id AS housework_id, h.name AS housework_name, h.category AS housework_category
+        FROM families f
+                 LEFT JOIN family_members fm ON f.id = fm.family_id
+                 LEFT JOIN tasks t ON fm.id = t.family_member_id
+                 LEFT JOIN houseworks h ON t.housework_id = h.id
+        WHERE f.id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="Family">
+        SELECT * FROM families
+    </select>
+
+    <insert id="insert" parameterType="Family" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO families (name, desc)
+        VALUES (#{name}, #{desc})
+    </insert>
+
+    <update id="update" parameterType="Family">
+        UPDATE families
+        SET name = #{name}, desc = #{desc}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM families WHERE id = #{id}
+    </delete>
+</mapper>
