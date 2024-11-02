@@ -1,0 +1,76 @@
+package com.ssafy.housework.controller;
+
+import com.ssafy.housework.model.housework.HouseworkService;
+import com.ssafy.housework.model.housework.dto.CreateHousework;
+import com.ssafy.housework.model.housework.dto.UpdateHousework;
+import com.ssafy.housework.model.housework.dto.Housework;
+import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/houseworks")
+public class HouseworkController {
+
+    private final HouseworkService houseworkService;
+
+    public HouseworkController(HouseworkService houseworkService) {
+        this.houseworkService = houseworkService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Housework> getHousework(@PathVariable int id) {
+        try {
+            Housework housework = houseworkService.getOne(id);
+            return ResponseEntity.ok(housework);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Housework>> getAllHouseworks() {
+        List<Housework> houseworks = houseworkService.getAll();
+        if (houseworks.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+        return ResponseEntity.ok(houseworks);
+    }
+
+    @PostMapping
+    public ResponseEntity<Housework> createHousework(@RequestBody CreateHousework createHousework) {
+        try {
+            Housework housework = houseworkService.create(createHousework);
+            return ResponseEntity.status(HttpStatus.CREATED).body(housework);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Housework> updateHousework(@PathVariable int id, @RequestBody UpdateHousework updateHousework) {
+        try {
+            Housework housework = houseworkService.update(id, updateHousework);
+            return ResponseEntity.ok(housework);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteHousework(@PathVariable int id) {
+        try {
+            houseworkService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+}
