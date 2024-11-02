@@ -7,7 +7,7 @@
     <resultMap id="FamilyResultMap" type="Family">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
-        <result property="desc" column="desc"/>
+        <result property="description" column="description"/>
         <collection property="members" ofType="FamilyMember">
             <id property="id" column="member_id"/>
             <result property="userId" column="user_id"/>
@@ -45,13 +45,13 @@
     </select>
 
     <insert id="insert" parameterType="Family" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO families (name, desc)
-        VALUES (#{name}, #{desc})
+        INSERT INTO families (name, description)
+        VALUES (#{name}, #{description})
     </insert>
 
     <update id="update" parameterType="Family">
         UPDATE families
-        SET name = #{name}, desc = #{desc}
+        SET name = #{name}, description = #{description}
         WHERE id = #{id}
     </update>
 

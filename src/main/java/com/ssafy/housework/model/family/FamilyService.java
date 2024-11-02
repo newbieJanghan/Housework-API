@@ -7,7 +7,6 @@ import com.ssafy.housework.model.familyMember.FamilyMemberDao;
 import com.ssafy.housework.model.familyMember.dto.FamilyMember;
 import com.ssafy.housework.model.task.TaskDao;
 import com.ssafy.housework.model.family.dto.Family;
-import com.ssafy.housework.model.task.dto.Task;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +40,7 @@ public class FamilyService {
     }
 
     public Family create(CreateFamily create) throws DataAccessResourceFailureException {
-        Family family = new Family(create.getName(), create.getDesc());
+        Family family = new Family(create.getName(), create.getDescription());
         int result = familyDao.insert(family);
         if (result == 0) {
             throw new DataAccessResourceFailureException("Failed to create family");
@@ -58,7 +57,7 @@ public class FamilyService {
 
         family.setId(id);
         family.setName(update.getName());
-        family.setDesc(update.getDesc());
+        family.setDescription(update.getDescription());
 
         int result = familyDao.update(family);
         if (result == 0) {

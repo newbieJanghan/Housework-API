@@ -2,14 +2,14 @@ package com.ssafy.housework.model.family.dto;
 
 public class UpdateFamily {
     String name;
-    String desc;
+    String description;
 
     public UpdateFamily() {
     }
 
-    public UpdateFamily(String name, String desc) {
+    public UpdateFamily(String name, String description) {
         this.name = name;
-        this.desc = desc;
+        this.description = description;
     }
 
     public String getName() {
@@ -20,11 +20,11 @@ public class UpdateFamily {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

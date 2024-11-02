@@ -8,7 +8,7 @@ import java.util.List;
 public class Family {
     int id;
     String name;
-    String desc;
+    String description;
     List<FamilyMember> members;
     List<Task> tasks;
 
@@ -19,15 +19,15 @@ public class Family {
         this.name = name;
     }
 
-    public Family(String name, String desc) {
+    public Family(String name, String description) {
         this.name = name;
-        this.desc = desc;
+        this.description = description;
     }
 
-    public Family(int id, String name, String desc, List<FamilyMember> members ,List<Task> tasks) {
+    public Family(int id, String name, String description, List<FamilyMember> members , List<Task> tasks) {
         this.id = id;
         this.name = name;
-        this.desc = desc;
+        this.description = description;
         this.members = members;
         this.tasks = tasks;
     }
@@ -48,12 +48,12 @@ public class Family {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<FamilyMember> getMembers() {
