@@ -10,7 +10,7 @@ CREATE TABLE users
 (
     id        INT AUTO_INCREMENT PRIMARY KEY,
     name      VARCHAR(255) NOT NULL,
-    email     VARCHAR(255) NOT NULL,
+    email     VARCHAR(255) NOT NULL UNIQUE,
     password  VARCHAR(255) NOT NULL,
     family_id INT,
     FOREIGN KEY (family_id) REFERENCES families (id)
