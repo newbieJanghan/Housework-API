@@ -8,6 +8,7 @@ import java.util.List;
 public interface UserDao {
     User selectOne(int id);
     List<User> selectAll();
+    User selectByEmail(String email);
     int insert(User user);
     int update(User user);
     int delete(int id);

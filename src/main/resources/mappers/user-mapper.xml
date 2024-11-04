@@ -12,14 +12,18 @@
         SELECT * FROM users
     </select>
 
+    <select id="selectByEmail" resultType="User">
+        SELECT * FROM users WHERE email = #{email}
+    </select>
+
     <insert id="insert" parameterMap="User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO users (name, email, password, house_id)
-        VALUES (#{name}, #{email}, #{password}, #{houseId})
+        INSERT INTO users (name, email, password, family_id)
+        VALUES (#{name}, #{email}, #{password}, #{familyId})
     </insert>
 
     <update id="update" parameterType="User">
         UPDATE users
-        SET name = #{name}, email = #{email}, password = #{password}, house_id = #{houseId}
+        SET name = #{name}, email = #{email}, password = #{password}, family_id = #{familyId}
         WHERE id = #{id}
     </update>
 
