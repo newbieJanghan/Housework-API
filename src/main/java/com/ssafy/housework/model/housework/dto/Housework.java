@@ -13,6 +13,7 @@ public class Housework {
         this.category = category;
     }
 
+    // for mapper
     public Housework(int id, String name, String category) {
         this.id = id;
         this.name = name;

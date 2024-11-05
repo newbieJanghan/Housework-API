@@ -2,26 +2,33 @@ package com.ssafy.housework.model.user.dto;
 
 public class User {
     int id;
+    int familyId;
     String name;
     String email;
     String password;
-    Integer familyId; // Nullable
+    String profileImageUrl;
+    Boolean isAdmin;
 
     public User() {
     }
 
-    public User(String name, String email, String password) {
+    // for sign up
+    public User(int familyId, String name, String email, String password) {
+        this.familyId = familyId;
         this.name = name;
         this.email = email;
         this.password = password;
     }
 
-    public User(int id, String name, String email, String password, Integer familyId) {
+    // for mapper
+    public User(int id, int familyId, String name, String email, String password, String profileImageUrl, boolean isAdmin) {
         this.id = id;
+        this.familyId = familyId;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.familyId = familyId;
+        this.profileImageUrl = profileImageUrl;
+        this.isAdmin = isAdmin;
     }
 
     public int getId() {
@@ -30,6 +37,14 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Integer getFamilyId() {
+        return familyId;
+    }
+
+    public void setFamilyId(Integer familyId) {
+        this.familyId = familyId;
     }
 
     public String getName() {
@@ -56,11 +71,11 @@ public class User {
         this.password = password;
     }
 
-    public Integer getFamilyId() {
-        return familyId;
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
 
-    public void setFamilyId(Integer familyId) {
-        this.familyId = familyId;
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }

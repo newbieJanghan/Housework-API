@@ -1,40 +1,41 @@
 package com.ssafy.housework.model.task.dto;
 
-import com.ssafy.housework.model.familyMember.dto.FamilyMember;
-import com.ssafy.housework.model.housework.dto.Housework;
-
 import java.time.LocalDateTime;
 
 public class Task {
     int id;
     int familyId;
-    Integer familyMemberId; // Nullable
-    int houseworkId;
+    Integer houseworkId; // nullable for raw text input on column 'name'
+    String name;
+    String description;
     LocalDateTime dueAt;
-    LocalDateTime doneAt;
-
-    FamilyMember familyMember;
-    Housework housework;
 
     public Task() {
     }
 
-    public Task(int familyId, int houseworkId, Integer familyMemberId, LocalDateTime dueAt) {
+    // with houseworkId
+    public Task(int familyId, Integer houseworkId, LocalDateTime dueAt) {
         this.familyId = familyId;
         this.houseworkId = houseworkId;
-        this.familyMemberId = familyMemberId;
         this.dueAt = dueAt;
     }
 
-    public Task(int id, Integer familyMemberId, int familyId, int houseworkId, LocalDateTime dueAt, LocalDateTime doneAt, FamilyMember familyMember, Housework housework) {
+    // without houseworkId
+    public Task(int familyId, String name, String description, LocalDateTime dueAt) {
+        this.familyId = familyId;
+        this.name = name;
+        this.description = description;
+        this.dueAt = dueAt;
+    }
+
+    // for mapper
+    public Task(int id, int familyId, int houseworkId, String name, String description, LocalDateTime dueAt) {
         this.id = id;
-        this.familyMemberId = familyMemberId;
         this.familyId = familyId;
         this.houseworkId = houseworkId;
+        this.name = name;
+        this.description = description;
         this.dueAt = dueAt;
-        this.doneAt = doneAt;
-        this.familyMember = familyMember;
-        this.housework = housework;
     }
 
     public int getId() {
@@ -43,14 +44,6 @@ public class Task {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Integer getFamilyMemberId() {
-        return familyMemberId;
-    }
-
-    public void setFamilyMemberId(Integer familyMemberId) {
-        this.familyMemberId = familyMemberId;
     }
 
     public int getFamilyId() {
@@ -69,35 +62,27 @@ public class Task {
         this.houseworkId = houseworkId;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public LocalDateTime getDueAt() {
         return dueAt;
     }
 
     public void setDueAt(LocalDateTime dueAt) {
         this.dueAt = dueAt;
-    }
-
-    public LocalDateTime getDoneAt() {
-        return doneAt;
-    }
-
-    public void setDoneAt(LocalDateTime doneAt) {
-        this.doneAt = doneAt;
-    }
-
-    public FamilyMember getFamilyMember() {
-        return familyMember;
-    }
-
-    public void setFamilyMember(FamilyMember familyMember) {
-        this.familyMember = familyMember;
-    }
-
-    public Housework getHousework() {
-        return housework;
-    }
-
-    public void setHousework(Housework housework) {
-        this.housework = housework;
     }
 }
