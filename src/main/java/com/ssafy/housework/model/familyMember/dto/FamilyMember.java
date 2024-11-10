@@ -1,57 +1,25 @@
 package com.ssafy.housework.model.familyMember.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class FamilyMember {
     int id;
     int userId;
     int familyId;
     String role;
-
-    public FamilyMember() {
-    }
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 
     public FamilyMember(int userId, int familyId, String role) {
         this.userId = userId;
         this.familyId = familyId;
-        this.role = role;
-    }
-
-    // for mapper
-    public FamilyMember(int id, int userId, int familyId, String role) {
-        this.id = id;
-        this.userId = userId;
-        this.familyId = familyId;
-        this.role = role;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getFamilyId() {
-        return familyId;
-    }
-
-    public void setFamilyId(int familyId) {
-        this.familyId = familyId;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
         this.role = role;
     }
 }
