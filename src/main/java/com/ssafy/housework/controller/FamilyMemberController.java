@@ -2,9 +2,9 @@ package com.ssafy.housework.controller;
 
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
 import com.ssafy.housework.model.familyMember.FamilyMemberService;
-import com.ssafy.housework.model.familyMember.dto.CreateFamilyMember;
 import com.ssafy.housework.model.familyMember.dto.FamilyMember;
-import com.ssafy.housework.model.familyMember.dto.UpdateFamilyMember;
+import com.ssafy.housework.model.familyMember.dto.FamilyMemberCreate;
+import com.ssafy.housework.model.familyMember.dto.FamilyMemberUpdate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +40,9 @@ public class FamilyMemberController {
     }
 
     @PostMapping
-    public ResponseEntity<FamilyMember> createFamilyMember(@RequestBody CreateFamilyMember createFamilyMember) {
+    public ResponseEntity<FamilyMember> createFamilyMember(@RequestBody FamilyMemberCreate familyMemberCreate) {
         try {
-            FamilyMember familyMember = familyMemberService.create(createFamilyMember);
+            FamilyMember familyMember = familyMemberService.create(familyMemberCreate);
             return ResponseEntity.status(HttpStatus.CREATED).body(familyMember);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -50,9 +50,9 @@ public class FamilyMemberController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FamilyMember> updateFamilyMember(@PathVariable("id") int id, @RequestBody UpdateFamilyMember updateFamilyMember) {
+    public ResponseEntity<FamilyMember> updateFamilyMember(@PathVariable("id") int id, @RequestBody FamilyMemberUpdate familyMemberUpdate) {
         try {
-            FamilyMember familyMember = familyMemberService.update(id, updateFamilyMember);
+            FamilyMember familyMember = familyMemberService.update(id, familyMemberUpdate);
             return ResponseEntity.status(HttpStatus.OK).body(familyMember);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

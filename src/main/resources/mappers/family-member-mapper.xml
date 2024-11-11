@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.housework.model.familyMember.FamilyMemberDao">
+    <select id="selectOne" resultType="FamilyMember">
+        SELECT *
+        FROM family_members
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="FamilyMember">
+        SELECT *
+        FROM family_members
+    </select>
+
+    <insert id="insert" parameterType="FamilyMember" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO family_members (user_id, family_id, role)
+        VALUES (#{userId}, #{familyId}, #{role})
+    </insert>
+
+    <update id="update" parameterType="FamilyMember">
+        UPDATE family_members
+        SET user_id   = #{userId},
+            family_id = #{familyId},
+            role      = #{role}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE
+        FROM family_members
+        WHERE id = #{id}
+    </delete>
+</mapper>

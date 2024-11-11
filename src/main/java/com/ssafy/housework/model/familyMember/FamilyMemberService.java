@@ -1,9 +1,9 @@
 package com.ssafy.housework.model.familyMember;
 
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
-import com.ssafy.housework.model.familyMember.dto.CreateFamilyMember;
 import com.ssafy.housework.model.familyMember.dto.FamilyMember;
-import com.ssafy.housework.model.familyMember.dto.UpdateFamilyMember;
+import com.ssafy.housework.model.familyMember.dto.FamilyMemberCreate;
+import com.ssafy.housework.model.familyMember.dto.FamilyMemberUpdate;
 import com.ssafy.housework.model.user.UserDao;
 import com.ssafy.housework.model.user.dto.User;
 import org.springframework.dao.DataAccessResourceFailureException;
@@ -34,36 +34,30 @@ public class FamilyMemberService {
         return familyMemberDao.selectAll();
     }
 
-    public FamilyMember create(CreateFamilyMember create) {
-        User user = userDao.selectOne(create.getUserId());
+    public FamilyMember create(FamilyMemberCreate create) {
+        User user = userDao.selectOne(create.userId());
         if (user == null) {
-            throw new ResourceNotFoundException("User not found with id: " + create.getUserId());
+            throw new ResourceNotFoundException("User not found with id: " + create.userId());
         }
 
-        FamilyMember familyMember = new FamilyMember(create.getUserId(), create.getFamilyId(), create.getRole());
+        FamilyMember familyMember = new FamilyMember(create.userId(), create.familyId(), create.role());
 
         int result = familyMemberDao.insert(familyMember);
         if (result == 0) {
             throw new DataAccessResourceFailureException("Failed to create family member");
         }
 
-        user.setFamilyId(create.getFamilyId());
-        result = userDao.update(user);
-        if (result == 0) {
-            throw new DataAccessResourceFailureException("Failed to add user's family id with user id: " + create.getUserId());
-        }
-
         return familyMember;
     }
 
-    public FamilyMember update(int id, UpdateFamilyMember update) {
+    public FamilyMember update(int id, FamilyMemberUpdate update) {
         FamilyMember familyMember = familyMemberDao.selectOne(id);
         if (familyMember == null) {
             throw new ResourceNotFoundException("Family member not found with id: " + id);
         }
 
         familyMember.setId(id);
-        familyMember.setRole(update.getRole());
+        if (update.role() != null) familyMember.setRole(update.role());
 
         int result = familyMemberDao.update(familyMember);
         if (result == 0) {
