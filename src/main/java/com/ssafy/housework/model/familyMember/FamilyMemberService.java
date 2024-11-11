@@ -35,22 +35,16 @@ public class FamilyMemberService {
     }
 
     public FamilyMember create(FamilyMemberCreate create) {
-        User user = userDao.selectOne(create.getUserId());
+        User user = userDao.selectOne(create.userId());
         if (user == null) {
-            throw new ResourceNotFoundException("User not found with id: " + create.getUserId());
+            throw new ResourceNotFoundException("User not found with id: " + create.userId());
         }
 
-        FamilyMember familyMember = new FamilyMember(create.getUserId(), create.getFamilyId(), create.getRole());
+        FamilyMember familyMember = new FamilyMember(create.userId(), create.familyId(), create.role());
 
         int result = familyMemberDao.insert(familyMember);
         if (result == 0) {
             throw new DataAccessResourceFailureException("Failed to create family member");
-        }
-
-        user.setFamilyId(create.getFamilyId());
-        result = userDao.update(user);
-        if (result == 0) {
-            throw new DataAccessResourceFailureException("Failed to add user's family id with user id: " + create.getUserId());
         }
 
         return familyMember;
@@ -63,7 +57,7 @@ public class FamilyMemberService {
         }
 
         familyMember.setId(id);
-        familyMember.setRole(update.getRole());
+        if (update.role() != null) familyMember.setRole(update.role());
 
         int result = familyMemberDao.update(familyMember);
         if (result == 0) {
