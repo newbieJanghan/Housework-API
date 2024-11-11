@@ -12,7 +12,7 @@
 
     <select id="selectAllByFamilyMemberId" parameterType="int" resultType="Assignment">
         SELECT *
-        FROM families
+        FROM assignments
         WHERE family_member_id = #{familyMemberId}
     </select>
 
