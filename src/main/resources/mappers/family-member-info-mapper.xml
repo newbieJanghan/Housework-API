@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.housework.model.familyMemberInfo.FamilyMemberInfoDao">
+    <select id="selectOne" resultType="FamilyMemberInfo" parameterType="int">
+        SELECT fm.*, u.name as name, u.email as email, u.profile_image_url as profile_image_url
+        FROM family_members fm
+                 LEFT JOIN users u ON fm.user_id = u.id
+        WHERE fm.id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="FamilyMemberInfo" parameterType="int">
+        SELECT fm.*, u.name as name, u.email as email, u.profile_image_url as profile_image_url
+        FROM family_members fm
+                 LEFT JOIN users u ON fm.user_id = u.id
+        WHERE fm.family_id = #{familyId}
+    </select>
+
+
+</mapper>
