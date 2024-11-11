@@ -3,10 +3,19 @@ CREATE DATABASE ssafy_housework;
 
 USE ssafy_housework;
 
+CREATE TABLE families
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 CREATE TABLE users
 (
     id        INT AUTO_INCREMENT PRIMARY KEY,
-    family_id INT,
+    family_id INT NOT NULL,
     name      VARCHAR(50) NOT NULL,
     email     VARCHAR(50) NOT NULL UNIQUE,
     password  VARCHAR(255) NOT NULL,
@@ -15,15 +24,6 @@ CREATE TABLE users
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (family_id) REFERENCES families (id)
-);
-
-CREATE TABLE families
-(
-    id          INT AUTO_INCREMENT PRIMARY KEY,
-    name        VARCHAR(255) NOT NULL,
-    description TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 );
 
 CREATE TABLE family_members
@@ -44,7 +44,7 @@ CREATE TABLE housework_categories
     family_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE houseworks
@@ -64,7 +64,7 @@ CREATE TABLE tasks
 (
     id               INT AUTO_INCREMENT PRIMARY KEY,
     family_id        INT      NOT NULL,
-    housework_id     INT      NNOT NULL,
+    housework_id     INT      NOT NULL,
     name             VARCHAR(255),
     description      TEXT,
     due_at           DATETIME NOT NULL,
