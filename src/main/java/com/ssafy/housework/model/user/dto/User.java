@@ -27,6 +27,5 @@ public class User {
         this.email = email;
         this.password = password;
         this.profileImageUrl = profileImageUrl;
-        this.isAdmin = true;
     }
 }

@@ -5,29 +5,39 @@
 
 <mapper namespace="com.ssafy.housework.model.user.UserDao">
     <select id="selectOne" resultType="User">
-        SELECT * FROM users WHERE id = #{id}
+        SELECT *
+        FROM users
+        WHERE id = #{id}
     </select>
 
     <select id="selectAll" resultType="User">
-        SELECT * FROM users
+        SELECT *
+        FROM users
     </select>
 
     <select id="selectByEmail" resultType="User">
-        SELECT * FROM users WHERE email = #{email}
+        SELECT *
+        FROM users
+        WHERE email = #{email}
     </select>
 
     <insert id="insert" parameterMap="User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO users (name, email, password, family_id)
-        VALUES (#{name}, #{email}, #{password}, #{familyId})
+        INSERT INTO users (family_id, name, email, password, profile_image_url)
+        VALUES (#{familyId}, #{name}, #{email}, #{password}, #{profileImageUrl})
     </insert>
 
     <update id="update" parameterType="User">
         UPDATE users
-        SET name = #{name}, email = #{email}, password = #{password}, family_id = #{familyId}
+        SET name              = #{name},
+            password          = #{password},
+            profile_image_url = #{profileImageUrl},
+            is_admin          = #{isAdmin}
         WHERE id = #{id}
     </update>
 
     <delete id="delete" parameterType="int">
-        DELETE FROM users WHERE id = #{id}
+        DELETE
+        FROM users
+        WHERE id = #{id}
     </delete>
 </mapper>
