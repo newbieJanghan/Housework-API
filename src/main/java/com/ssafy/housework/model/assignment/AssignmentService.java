@@ -17,8 +17,8 @@ public class AssignmentService {
         this.assignmentDao = assignmentDao;
     }
 
-    public List<Assignment> getAllByTaskId(int taskId) {
-        return assignmentDao.selectAllByTaskId(taskId);
+    public List<Assignment> getAllByFamilyMemberId(int familyMemberId) {
+        return assignmentDao.selectAllByFamilyMemberId(familyMemberId);
     }
 
     public Assignment getOne(int id) {
@@ -48,7 +48,8 @@ public class AssignmentService {
         }
 
         assignment.setId(id);
-        assignment.setCalorieBurned(update.calorieBurned());
+        if (update.calorieBurned() != null) assignment.setCalorieBurned(update.calorieBurned());
+        if (update.isActive() != null) assignment.setActive(update.isActive());
 
         int result = assignmentDao.update(assignment);
         if (result == 0) {

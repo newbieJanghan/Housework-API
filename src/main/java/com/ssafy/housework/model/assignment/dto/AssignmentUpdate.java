@@ -1,5 +1,5 @@
 package com.ssafy.housework.model.assignment.dto;
 
-public record AssignmentUpdate(int calorieBurned) {
+public record AssignmentUpdate(Integer calorieBurned, Boolean isActive) {
 
 }

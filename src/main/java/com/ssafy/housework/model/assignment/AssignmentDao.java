@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface AssignmentDao {
-    List<Assignment> selectAllByTaskId(int taskId);
+    List<Assignment> selectAllByFamilyMemberId(int familyMemberId);
 
     Assignment selectOne(int id);
 
