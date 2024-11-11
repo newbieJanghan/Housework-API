@@ -5,25 +5,32 @@
 
 <mapper namespace="com.ssafy.housework.model.housework.HouseworkDao">
     <select id="selectOne" resultType="Housework">
-        SELECT * FROM houseworks WHERE id = #{id}
+        SELECT *
+        FROM houseworks
+        WHERE id = #{id}
     </select>
 
     <select id="selectAll" resultType="Housework">
-        SELECT * FROM houseworks
+        SELECT *
+        FROM houseworks
     </select>
 
     <insert id="insert" parameterType="Housework" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO houseworks (name, category)
-        VALUES (#{name}, #{category})
+        INSERT INTO houseworks (family_id, name, calorie_amount)
+        VALUES (#{familyId}, #{name}, #{calorieAmount})
     </insert>
 
     <update id="update" parameterType="Housework">
         UPDATE houseworks
-        SET name = #{name}, category = #{category}
+        SET family_id      = #{familyId},
+            name           = #{name},
+            calorie_amount = #{calorieAmount}
         WHERE id = #{id}
     </update>
 
     <delete id="delete" parameterType="int">
-        DELETE FROM houseworks WHERE id = #{id}
+        DELETE
+        FROM houseworks
+        WHERE id = #{id}
     </delete>
 </mapper>
