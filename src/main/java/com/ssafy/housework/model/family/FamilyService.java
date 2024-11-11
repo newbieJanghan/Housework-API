@@ -1,12 +1,11 @@
 package com.ssafy.housework.model.family;
 
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
-import com.ssafy.housework.model.family.dto.CreateFamily;
-import com.ssafy.housework.model.family.dto.UpdateFamily;
-import com.ssafy.housework.model.familyMember.FamilyMemberDao;
-import com.ssafy.housework.model.familyMember.dto.FamilyMember;
-import com.ssafy.housework.model.task.TaskDao;
 import com.ssafy.housework.model.family.dto.Family;
+import com.ssafy.housework.model.family.dto.FamilyCreate;
+import com.ssafy.housework.model.family.dto.FamilyUpdate;
+import com.ssafy.housework.model.familyMember.FamilyMemberDao;
+import com.ssafy.housework.model.task.TaskDao;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +28,8 @@ public class FamilyService {
             throw new ResourceNotFoundException("Family not found with id: " + id);
         }
 
-        List<FamilyMember> members = familyMemberDao.selectByFamilyId(id);
-        family.setMembers(members);
+//        List<FamilyMember> members = familyMemberDao.selectByFamilyId(id);
+//        family.setMembers(members);
 
         return family;
     }
@@ -39,8 +38,8 @@ public class FamilyService {
         return familyDao.selectAll();
     }
 
-    public Family create(CreateFamily create) throws DataAccessResourceFailureException {
-        Family family = new Family(create.getName(), create.getDescription());
+    public Family create(FamilyCreate create) throws DataAccessResourceFailureException {
+        Family family = new Family(create.name(), create.description());
         int result = familyDao.insert(family);
         if (result == 0) {
             throw new DataAccessResourceFailureException("Failed to create family");
@@ -49,15 +48,15 @@ public class FamilyService {
         return family;
     }
 
-    public Family update(int id, UpdateFamily update) {
+    public Family update(int id, FamilyUpdate update) {
         Family family = familyDao.selectOne(id);
         if (family == null) {
             throw new ResourceNotFoundException("Family not found with id: " + id);
         }
 
         family.setId(id);
-        family.setName(update.getName());
-        family.setDescription(update.getDescription());
+        if (update.name() != null) family.setName(update.name());
+        if (update.description() != null) family.setDescription(update.description());
 
         int result = familyDao.update(family);
         if (result == 0) {
