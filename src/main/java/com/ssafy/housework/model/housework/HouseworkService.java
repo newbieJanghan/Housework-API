@@ -1,9 +1,9 @@
 package com.ssafy.housework.model.housework;
 
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
-import com.ssafy.housework.model.housework.dto.CreateHousework;
 import com.ssafy.housework.model.housework.dto.Housework;
-import com.ssafy.housework.model.housework.dto.UpdateHousework;
+import com.ssafy.housework.model.housework.dto.HouseworkCreate;
+import com.ssafy.housework.model.housework.dto.HouseworkUpdate;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +25,8 @@ public class HouseworkService {
         return houseworkDao.selectAll();
     }
 
-    public Housework create(CreateHousework createHousework) {
-        Housework housework = new Housework(createHousework.getName(), createHousework.getCategory());
+    public Housework create(HouseworkCreate createDto) {
+        Housework housework = new Housework(createDto.familyId(), createDto.name(), createDto.calorieAmount());
 
         int result = houseworkDao.insert(housework);
         if (result == 0) {
@@ -36,15 +36,15 @@ public class HouseworkService {
         return housework;
     }
 
-    public Housework update(int id, UpdateHousework updateHousework) {
+    public Housework update(int id, HouseworkUpdate updateDto) {
         Housework housework = houseworkDao.selectOne(id);
         if (housework == null) {
             throw new ResourceNotFoundException("Housework not found with id: " + id);
         }
 
         housework.setId(id);
-        housework.setName(updateHousework.getName());
-        housework.setCategory(updateHousework.getCategory());
+        if (updateDto.name() != null) housework.setName(updateDto.name());
+        if (updateDto.calorieAmount() != null) housework.setCalorieAmount(updateDto.calorieAmount());
 
         int result = houseworkDao.update(housework);
         if (result == 0) {

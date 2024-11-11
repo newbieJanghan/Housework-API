@@ -1,10 +1,10 @@
 package com.ssafy.housework.controller;
 
-import com.ssafy.housework.model.housework.HouseworkService;
-import com.ssafy.housework.model.housework.dto.CreateHousework;
-import com.ssafy.housework.model.housework.dto.UpdateHousework;
-import com.ssafy.housework.model.housework.dto.Housework;
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
+import com.ssafy.housework.model.housework.HouseworkService;
+import com.ssafy.housework.model.housework.dto.Housework;
+import com.ssafy.housework.model.housework.dto.HouseworkCreate;
+import com.ssafy.housework.model.housework.dto.HouseworkUpdate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,9 +41,9 @@ public class HouseworkController {
     }
 
     @PostMapping
-    public ResponseEntity<Housework> createHousework(@RequestBody CreateHousework createHousework) {
+    public ResponseEntity<Housework> createHousework(@RequestBody HouseworkCreate houseworkCreate) {
         try {
-            Housework housework = houseworkService.create(createHousework);
+            Housework housework = houseworkService.create(houseworkCreate);
             return ResponseEntity.status(HttpStatus.CREATED).body(housework);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -51,9 +51,9 @@ public class HouseworkController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Housework> updateHousework(@PathVariable int id, @RequestBody UpdateHousework updateHousework) {
+    public ResponseEntity<Housework> updateHousework(@PathVariable int id, @RequestBody HouseworkUpdate houseworkUpdate) {
         try {
-            Housework housework = houseworkService.update(id, updateHousework);
+            Housework housework = houseworkService.update(id, houseworkUpdate);
             return ResponseEntity.status(HttpStatus.OK).body(housework);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
