@@ -1,10 +1,10 @@
 package com.ssafy.housework.controller;
 
-import com.ssafy.housework.model.user.UserService;
-import com.ssafy.housework.model.user.dto.CreateUser;
-import com.ssafy.housework.model.user.dto.UpdateUser;
-import com.ssafy.housework.model.user.dto.User;
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
+import com.ssafy.housework.model.user.UserService;
+import com.ssafy.housework.model.user.dto.User;
+import com.ssafy.housework.model.user.dto.UserCreate;
+import com.ssafy.housework.model.user.dto.UserUpdate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,9 +41,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody CreateUser createUser) {
+    public ResponseEntity<User> createUser(@RequestBody UserCreate userCreate) {
         try {
-            User user = userService.create(createUser);
+            User user = userService.create(userCreate);
             return ResponseEntity.status(HttpStatus.CREATED).body(user);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -51,9 +51,9 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody UpdateUser updateUser) {
+    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody UserUpdate userUpdate) {
         try {
-            User user = userService.update(id, updateUser);
+            User user = userService.update(id, userUpdate);
             return ResponseEntity.status(HttpStatus.OK).body(user);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
