@@ -1,10 +1,10 @@
 package com.ssafy.housework.controller;
 
-import com.ssafy.housework.model.task.TaskService;
-import com.ssafy.housework.model.task.dto.CreateTask;
-import com.ssafy.housework.model.task.dto.UpdateTask;
-import com.ssafy.housework.model.task.dto.Task;
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
+import com.ssafy.housework.model.task.TaskService;
+import com.ssafy.housework.model.task.dto.Task;
+import com.ssafy.housework.model.task.dto.TaskCreate;
+import com.ssafy.housework.model.task.dto.TaskUpdate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,9 +41,9 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody CreateTask createTask) {
+    public ResponseEntity<Task> createTask(@RequestBody TaskCreate taskCreate) {
         try {
-            Task task = taskService.create(createTask);
+            Task task = taskService.create(taskCreate);
             return ResponseEntity.status(HttpStatus.CREATED).body(task);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -51,9 +51,9 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable int id, @RequestBody UpdateTask updateTask) {
+    public ResponseEntity<Task> updateTask(@PathVariable int id, @RequestBody TaskUpdate taskUpdate) {
         try {
-            Task task = taskService.update(id, updateTask);
+            Task task = taskService.update(id, taskUpdate);
             return ResponseEntity.status(HttpStatus.OK).body(task);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

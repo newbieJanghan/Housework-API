@@ -1,9 +1,9 @@
 package com.ssafy.housework.model.task;
 
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
-import com.ssafy.housework.model.task.dto.CreateTask;
 import com.ssafy.housework.model.task.dto.Task;
-import com.ssafy.housework.model.task.dto.UpdateTask;
+import com.ssafy.housework.model.task.dto.TaskCreate;
+import com.ssafy.housework.model.task.dto.TaskUpdate;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +26,8 @@ public class TaskService {
         return taskDao.selectAll();
     }
 
-    public Task create(CreateTask createTask) {
-        Task task = new Task(createTask.getFamilyId(), createTask.getHouseworkId(), createTask.getFamilyMemberId(), createTask.getDueAt());
+    public Task create(TaskCreate taskCreate) {
+        Task task = new Task(taskCreate.familyId(), taskCreate.houseworkId(), taskCreate.name(), taskCreate.description(), taskCreate.dueAt());
 
         int result = taskDao.insert(task);
         if (result == 0) {
@@ -37,7 +37,7 @@ public class TaskService {
         return task;
     }
 
-    public Task update(int id, UpdateTask updateTask) {
+    public Task update(int id, TaskUpdate taskUpdate) {
         Task task = taskDao.selectOne(id);
         if (task == null) {
             throw new ResourceNotFoundException("Task not found with id: " + id);
@@ -45,17 +45,9 @@ public class TaskService {
 
         task.setId(id);
 
-        if (updateTask.getFamilyMemberId() != null) {
-            task.setFamilyMemberId(updateTask.getFamilyMemberId());
-        }
-
-        if (updateTask.getHouseworkId() != null) {
-            task.setHouseworkId(updateTask.getHouseworkId());
-        }
-
-        if (updateTask.getDueAt() != null) {
-            task.setDueAt(updateTask.getDueAt());
-        }
+        if (taskUpdate.name() != null) task.setName(taskUpdate.name());
+        if (taskUpdate.description() != null) task.setDescription(taskUpdate.description());
+        if (taskUpdate.dueAt() != null) task.setDueAt(taskUpdate.dueAt());
 
         int result = taskDao.update(task);
         if (result == 0) {
