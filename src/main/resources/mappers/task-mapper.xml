@@ -26,8 +26,8 @@
             housework_id = #{houseworkId},
             name         = #{name},
             description  = #{description},
-            due_at       = #{dueAt},
-            WHERE id = #{id}
+            due_at       = #{dueAt}
+        WHERE id = #{id}
     </update>
 
     <delete id="delete" parameterType="int">
