@@ -1,9 +1,9 @@
 package com.ssafy.housework.model.familyMember;
 
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
-import com.ssafy.housework.model.familyMember.dto.CreateFamilyMember;
 import com.ssafy.housework.model.familyMember.dto.FamilyMember;
-import com.ssafy.housework.model.familyMember.dto.UpdateFamilyMember;
+import com.ssafy.housework.model.familyMember.dto.FamilyMemberCreate;
+import com.ssafy.housework.model.familyMember.dto.FamilyMemberUpdate;
 import com.ssafy.housework.model.user.UserDao;
 import com.ssafy.housework.model.user.dto.User;
 import org.springframework.dao.DataAccessResourceFailureException;
@@ -34,7 +34,7 @@ public class FamilyMemberService {
         return familyMemberDao.selectAll();
     }
 
-    public FamilyMember create(CreateFamilyMember create) {
+    public FamilyMember create(FamilyMemberCreate create) {
         User user = userDao.selectOne(create.getUserId());
         if (user == null) {
             throw new ResourceNotFoundException("User not found with id: " + create.getUserId());
@@ -56,7 +56,7 @@ public class FamilyMemberService {
         return familyMember;
     }
 
-    public FamilyMember update(int id, UpdateFamilyMember update) {
+    public FamilyMember update(int id, FamilyMemberUpdate update) {
         FamilyMember familyMember = familyMemberDao.selectOne(id);
         if (familyMember == null) {
             throw new ResourceNotFoundException("Family member not found with id: " + id);
