@@ -86,4 +86,17 @@ CREATE TABLE assignments
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (task_id) REFERENCES tasks (id),
     FOREIGN KEY (family_member_id) REFERENCES families (id)
+);
+
+CREATE TABLE workout_campaigns
+(
+    id        INT AUTO_INCREMENT PRIMARY KEY,
+    family_member_id   INT NOT NULL,
+    calorie_goal    INT NOT NULL,
+    calorie_burned  INT NOT NULL,
+    start_at        DATETIME NOT NULL,
+    end_at          DATETIME NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (family_member_id) REFERENCES families (id)
 )

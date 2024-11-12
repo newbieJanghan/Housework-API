@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.housework.model.workoutCampaign.WorkoutCampaignDao">
+    <select id="selectOne" parameterType="int">
+        SELECT *
+        FROM workout_campaigns
+        WHERE id = #{id};
+    </select>
+
+    <select id="selectAllByFamilyMemberId" parameterType="int" resultType="WorkoutCampaign">
+        SELECT *
+        FROM workout_campaigns
+        WHERE family_member_id = #{familyMemberId}
+    </select>
+
+    <select id="search" parameterType="WorkoutCampaignSearch" resultType="WorkoutCampaign">
+        SELECT *
+        FROM workout_campaigns
+        WHERE family_member_id = #{familyMemberId}
+          AND DATE(start_at) = DATE(#{startAt})
+          AND DATE(end_at) = DATE(#{endAt});
+    </select>
+
+    <insert id="insert" parameterType="WorkoutCampaign" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO workout_campaigns (family_member_id, calorie_goal, calorie_burned, start_at, end_at)
+        VALUES (#{familyMemberId}, #{calorieGoal}, #{calorieBurned}, #{startAt}, #{endAt})
+    </insert>
+
+    <update id="update" parameterType="WorkoutCampaign">
+        UPDATE workout_campaigns
+        SET calorie_goal   = #{calorieGoal},
+            calorie_burned = #{calorieBurned},
+            start_at       = #{startAt},
+            end_at         = #{endAt}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE
+        FROM workout_campaigns
+        WHERE id = #{id}
+    </delete>
+</mapper>
