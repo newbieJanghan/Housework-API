@@ -24,8 +24,8 @@
 
     <update id="update" parameterType="DailyWorkout">
         UPDATE daily_workouts
-        SET calorie_burned = #{calorieBurned},
-            WHERE id = #{id}
+        SET calorie_burned = #{calorieBurned}
+        WHERE id = #{id}
     </update>
 
     <delete id="delete" parameterType="int">
