@@ -31,7 +31,7 @@ public class UserService {
     }
 
     public User create(UserCreate userCreate) {
-        User user = new User(userCreate.familyId(), userCreate.name(), userCreate.email(), userCreate.password(), userCreate.profileImageUrl());
+        User user = new User(userCreate.familyId(), userCreate.name(), userCreate.email(), userCreate.password(), userCreate.profileImageUrl(), userCreate.calorieGoal());
 
         int result = userDao.insert(user);
         if (result == 0) {
@@ -50,7 +50,8 @@ public class UserService {
         user.setId(id);
         if (userUpdate.name() != null) user.setName(userUpdate.name());
         if (userUpdate.password() != null) user.setPassword(userUpdate.password());
-        if (userUpdate.profileImageUrl() != null) user.setProfileImageUrl(userUpdate.profileImageUrl());
+        if (userUpdate.profileImageUrl() != null) user.setProfileImageName(userUpdate.profileImageUrl());
+        if (userUpdate.calorieGoal() != null) user.setCalorieGoal(userUpdate.calorieGoal());
 
         int result = userDao.update(user);
         if (result == 0) {

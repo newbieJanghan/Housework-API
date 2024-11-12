@@ -17,12 +17,12 @@ public class AuthService {
     }
 
     public String login(LoginDto loginDto) {
-        User user = userDao.selectByEmail(loginDto.getEmail());
+        User user = userDao.selectByEmail(loginDto.email());
         if (user == null) {
             throw new IllegalArgumentException("User not found");
         }
 
-        if (user.getPassword().equals(loginDto.getPassword())) {
+        if (user.getPassword().equals(loginDto.password())) {
             return generateToken(user);
         } else {
             throw new IllegalArgumentException("Password is not correct");

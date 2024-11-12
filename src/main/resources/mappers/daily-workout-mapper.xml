@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.housework.model.dailyWorkout.DailyWorkoutDao">
+    <select id="selectOne" parameterType="int">
+        SELECT *
+        FROM daily_workouts
+        WHERE id = #{id};
+    </select>
+
+    <select id="search" parameterType="DailyWorkoutSearch" resultType="DailyWorkout">
+        SELECT *
+        FROM daily_workouts
+        WHERE user_id = #{userId}
+          AND DATE(created_at) = DATE(#{date})
+    </select>
+
+    <insert id="insert" parameterType="DailyWorkout" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO daily_workouts (user_id, calorie_burned)
+        VALUES (#{userId}, #{calorieBurned})
+    </insert>
+
+    <update id="update" parameterType="DailyWorkout">
+        UPDATE daily_workouts
+        SET calorie_burned = #{calorieBurned},
+            WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE
+        FROM daily_workouts
+        WHERE id = #{id}
+    </delete>
+</mapper>

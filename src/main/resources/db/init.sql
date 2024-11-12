@@ -40,6 +40,7 @@ CREATE TABLE houseworks
     name     VARCHAR(255) NOT NULL,
     description TEXT,
     color VARCHAR(50) DEFAULT "#000000",
+    calorie_amount int DEFAULT 0,
 
     start_at DATETIME NOT NULL,
     due_at  DATETIME NOT NULL,

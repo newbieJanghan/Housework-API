@@ -22,16 +22,18 @@
     </select>
 
     <insert id="insert" parameterMap="User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO users (family_id, name, email, password, profile_image_url)
-        VALUES (#{familyId}, #{name}, #{email}, #{password}, #{profileImageUrl})
+        INSERT INTO users (family_id, name, email, password, family_role, profile_image_name, calorie_goal)
+        VALUES (#{familyId}, #{name}, #{email}, #{password}, #{familyRole}, #{profileImageName}, #{calorieGoal})
     </insert>
 
     <update id="update" parameterType="User">
         UPDATE users
-        SET name              = #{name},
-            password          = #{password},
-            profile_image_url = #{profileImageUrl},
-            is_admin          = #{isAdmin}
+        SET name               = #{name},
+            password           = #{password},
+            family_role        = #{familyRole},
+            profile_image_name = #{profileImageName},
+            calorie_goal       = #{calorieGoal},
+            is_admin           = #{isAdmin}
         WHERE id = #{id}
     </update>
 

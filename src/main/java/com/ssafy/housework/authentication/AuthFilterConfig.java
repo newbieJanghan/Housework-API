@@ -12,8 +12,8 @@ public class AuthFilterConfig {
     public FilterRegistrationBean<JwtAuthFilter> jwtAuthFilter() {
         FilterRegistrationBean<JwtAuthFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new JwtAuthFilter());
-        // Apply filter to /api/v1/* URIs
-        registrationBean.addUrlPatterns("/api/v1/*");
+        // Apply filter to /* URIs
+        registrationBean.addUrlPatterns("/*");
         return registrationBean;
     }
 }

@@ -1,6 +1,6 @@
 package com.ssafy.housework.authentication.jwt;
 
-import com.ssafy.housework.authentication.dto.UserInfo;
+import com.ssafy.housework.authentication.dto.UserTokenInfo;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +16,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring("Bearer ".length());
             if (JWTUtil.verifyToken(token)) {
-                UserInfo info = UserInfoHandler.extractUserInfo(JWTUtil.getInfo(token));
+                UserTokenInfo info = UserInfoHandler.extractUserInfo(JWTUtil.getInfo(token));
                 request.setAttribute("user", info);
             }
         }

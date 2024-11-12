@@ -9,10 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -21,24 +19,24 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable int id) {
-        try {
-            User user = userService.getOne(id);
-            return ResponseEntity.status(HttpStatus.OK).body(user);
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
-
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAll();
-        if (users.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(users);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<User> getUser(@PathVariable int id) {
+//        try {
+//            User user = userService.getOne(id);
+//            return ResponseEntity.status(HttpStatus.OK).body(user);
+//        } catch (ResourceNotFoundException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity<List<User>> getAllUsers() {
+//        List<User> users = userService.getAll();
+//        if (users.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(users);
+//    }
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody UserCreate userCreate) {

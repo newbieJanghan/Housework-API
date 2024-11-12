@@ -13,15 +13,39 @@ import java.time.LocalDateTime;
 public class Housework {
     int id;
     int familyId;
-    Integer houseworkCategoryId; // nullable
+    int registerUserId;
+    Integer assignedUserId; // nullable
+
     String name;
+    String description;
+    String color;
     int calorieAmount;
+
+    LocalDateTime startAt;
+    LocalDateTime dueAt;
+    LocalDateTime doneAt;
+
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 
-    public Housework(int familyId, String name, int calorieAmount) {
+    public Housework(int familyId,
+                     int registerUserId,
+                     int assignedUserId,
+                     String name,
+                     String description,
+                     String color,
+                     int calorieAmount,
+                     LocalDateTime startAt,
+                     LocalDateTime dueAt
+    ) {
         this.familyId = familyId;
+        this.registerUserId = registerUserId;
+        this.assignedUserId = assignedUserId;
         this.name = name;
+        this.description = description;
+        this.color = color;
         this.calorieAmount = calorieAmount;
+        this.startAt = startAt;
+        this.dueAt = dueAt;
     }
 }

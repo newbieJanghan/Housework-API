@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -15,17 +16,20 @@ public class User {
     String name;
     String email;
     String password;
-    String profileImageUrl;
+    String familyRole;
+    String profileImageName;
+    int calorieGoal;
     Boolean isAdmin;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 
     // for sign up
-    public User(int familyId, String name, String email, String password, String profileImageUrl) {
+    public User(int familyId, String name, String email, String password, String profileImageName, Integer calorieGoal) {
         this.familyId = familyId;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.profileImageUrl = profileImageUrl;
+        this.profileImageName = profileImageName;
+        this.calorieGoal = Objects.requireNonNullElse(calorieGoal, 0);
     }
 }

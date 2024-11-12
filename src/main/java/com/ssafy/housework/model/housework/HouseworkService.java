@@ -25,8 +25,18 @@ public class HouseworkService {
         return houseworkDao.selectAll();
     }
 
-    public Housework create(HouseworkCreate createDto) {
-        Housework housework = new Housework(createDto.familyId(), createDto.name(), createDto.calorieAmount());
+    public Housework create(HouseworkCreate houseworkCreate) {
+        Housework housework = new Housework(
+                houseworkCreate.familyId(),
+                houseworkCreate.registerUserId(),
+                houseworkCreate.assignedUserId(),
+                houseworkCreate.name(),
+                houseworkCreate.description(),
+                houseworkCreate.color(),
+                houseworkCreate.calorieAmount(),
+                houseworkCreate.startAt(),
+                houseworkCreate.dueAt()
+        );
 
         int result = houseworkDao.insert(housework);
         if (result == 0) {
@@ -36,15 +46,22 @@ public class HouseworkService {
         return housework;
     }
 
-    public Housework update(int id, HouseworkUpdate updateDto) {
+    public Housework update(int id, HouseworkUpdate houseworkUpdate) {
         Housework housework = houseworkDao.selectOne(id);
         if (housework == null) {
             throw new ResourceNotFoundException("Housework not found with id: " + id);
         }
 
         housework.setId(id);
-        if (updateDto.name() != null) housework.setName(updateDto.name());
-        if (updateDto.calorieAmount() != null) housework.setCalorieAmount(updateDto.calorieAmount());
+        if (houseworkUpdate.registerUserId() != null) housework.setRegisterUserId(houseworkUpdate.registerUserId());
+        if (houseworkUpdate.assignedUserId() != null) housework.setAssignedUserId(houseworkUpdate.assignedUserId());
+        if (houseworkUpdate.name() != null) housework.setName(houseworkUpdate.name());
+        if (houseworkUpdate.description() != null) housework.setDescription(houseworkUpdate.description());
+        if (houseworkUpdate.color() != null) housework.setColor(houseworkUpdate.color());
+        if (houseworkUpdate.calorieAmount() != null) housework.setCalorieAmount(houseworkUpdate.calorieAmount());
+        if (houseworkUpdate.startAt() != null) housework.setStartAt(houseworkUpdate.startAt());
+        if (houseworkUpdate.dueAt() != null) housework.setDueAt(houseworkUpdate.dueAt());
+        if (houseworkUpdate.doneAt() != null) housework.setDoneAt(houseworkUpdate.doneAt());
 
         int result = houseworkDao.update(housework);
         if (result == 0) {
@@ -59,5 +76,9 @@ public class HouseworkService {
         if (result == 0) {
             throw new ResourceNotFoundException("Housework not found with id: " + id);
         }
+    }
+
+    public void makeDone(Housework housework) {
+        
     }
 }
