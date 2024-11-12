@@ -30,7 +30,7 @@ public class AuthService {
     }
 
     private String generateToken(User user) {
-        return JWTUtil.generateToken(UserInfoHandler.makeUserInfo(user));
+        return JWTUtil.generateToken(UserInfoHandler.makeUserInfoString(user));
 
     }
 }
