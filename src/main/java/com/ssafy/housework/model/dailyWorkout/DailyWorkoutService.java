@@ -21,8 +21,7 @@ public class DailyWorkoutService {
     }
 
     public List<WorkoutStat> getFamilyWorkoutStats(FamilyWorkoutsQuery query) {
-        List<DailyWorkout> dailyWorkouts = dailyWorkoutDao.selectFamilyWorkouts(query);
-
+        return dailyWorkoutDao.selectFamilyWorkouts(query);
     }
 
     public DailyWorkout create(DailyWorkout dailyWorkout) {

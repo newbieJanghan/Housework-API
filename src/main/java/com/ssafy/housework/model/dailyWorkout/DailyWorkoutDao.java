@@ -2,6 +2,7 @@ package com.ssafy.housework.model.dailyWorkout;
 
 import com.ssafy.housework.model.dailyWorkout.dto.DailyWorkout;
 import com.ssafy.housework.model.dailyWorkout.dto.FamilyWorkoutsQuery;
+import com.ssafy.housework.model.dailyWorkout.dto.WorkoutStat;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface DailyWorkoutDao {
 
     List<DailyWorkout> selectTodayWorkout(int userId);
 
-    List<DailyWorkout> selectFamilyWorkouts(FamilyWorkoutsQuery familyWorkoutsQuery);
+    List<WorkoutStat> selectFamilyWorkouts(FamilyWorkoutsQuery familyWorkoutsQuery);
 
     int insert(DailyWorkout dailyWorkout);
 
