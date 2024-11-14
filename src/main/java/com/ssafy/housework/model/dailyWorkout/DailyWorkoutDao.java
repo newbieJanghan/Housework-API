@@ -1,14 +1,18 @@
 package com.ssafy.housework.model.dailyWorkout;
 
 import com.ssafy.housework.model.dailyWorkout.dto.DailyWorkout;
-import com.ssafy.housework.model.dailyWorkout.dto.DailyWorkoutSearch;
+import com.ssafy.housework.model.dailyWorkout.dto.FamilyWorkoutsQuery;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface DailyWorkoutDao {
     DailyWorkout selectOne(int id);
 
-    List<DailyWorkout> search(DailyWorkoutSearch search);
+    List<DailyWorkout> selectTodayWorkout(int userId);
+
+    List<DailyWorkout> selectFamilyWorkouts(FamilyWorkoutsQuery familyWorkoutsQuery);
 
     int insert(DailyWorkout dailyWorkout);
 

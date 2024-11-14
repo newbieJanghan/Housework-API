@@ -10,11 +10,34 @@
         WHERE id = #{id};
     </select>
 
-    <select id="search" parameterType="DailyWorkoutSearch" resultType="DailyWorkout">
+    <select id="selectTodayWorkout" parameterType="int" resultType="DailyWorkout">
         SELECT *
         FROM daily_workouts
         WHERE user_id = #{userId}
-          AND DATE(created_at) = DATE(#{date})
+          AND DATE(created_at) = CURDATE();
+    </select>
+
+    <select id="selectFamilyWorkouts" parameterType="FamilyWorkoutsQuery" resultType="WorkoutStat">
+        WITH fh AS (SELECT assigned_user_id, done_at
+                    FROM houseworks
+                    WHERE family_id = #{familyId}
+                      AND DATE(start_at) between DATE(#{from}) and DATE_ADD(DATE(#{to}), INTERVAL 1 DAY))
+
+        SELECT u.id                                                                            as userId,
+               SUM(calorie_burned)                                                             as burnedKcal,
+               u.calorie_goal                                                                  as goalKcal,
+               (SELECT COUNT(1) FROM fh WHERE assigned_user_id = u.id AND done_at IS NOT NULL) as doneHouseworkCnt,
+               (SELECT COUNT(1) FROM fh WHERE assigned_user_id = u.id)                         as expectedHouseworkCnt,
+               #{from}                                                                         as 'from',
+               #{to}                                                                           as 'to'
+        FROM daily_workouts w
+                 LEFT JOIN users u on w.user_id = u.id
+        WHERE user_id IN
+              (SELECT user_id
+               FROM families
+               WHERE id = #{familyId})
+          AND DATE(w.created_at) between DATE(#{from}) and DATE_ADD(DATE(#{to}), INTERVAL 1 DAY)
+        GROUP BY user_id;
     </select>
 
     <insert id="insert" parameterType="DailyWorkout" useGeneratedKeys="true" keyProperty="id">
