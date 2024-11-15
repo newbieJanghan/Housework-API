@@ -1,5 +1,7 @@
 package com.ssafy.housework.controller;
 
+import com.ssafy.housework.core.auth.dto.AuthenticatedUser;
+import com.ssafy.housework.core.auth.interceptor.annotations.Admin;
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
 import com.ssafy.housework.model.user.UserService;
 import com.ssafy.housework.model.user.dto.User;
@@ -8,6 +10,8 @@ import com.ssafy.housework.model.user.dto.UserUpdate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -19,24 +23,30 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<User> getUser(@PathVariable int id) {
-//        try {
-//            User user = userService.getOne(id);
-//            return ResponseEntity.status(HttpStatus.OK).body(user);
-//        } catch (ResourceNotFoundException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//        }
-//    }
-//
-//    @GetMapping
-//    public ResponseEntity<List<User>> getAllUsers() {
-//        List<User> users = userService.getAll();
-//        if (users.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-//        }
-//        return ResponseEntity.status(HttpStatus.OK).body(users);
-//    }
+    @Admin
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable int id) {
+        try {
+            User user = userService.getOne(id);
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @Admin
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers(@RequestAttribute(AuthenticatedUser.key) AuthenticatedUser user) {
+        if (!user.isAdmin()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+
+        List<User> users = userService.getAll();
+        if (users.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(users);
+    }
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody UserCreate userCreate) {
@@ -48,6 +58,7 @@ public class UserController {
         }
     }
 
+    @Admin
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody UserUpdate userUpdate) {
         try {
@@ -60,6 +71,7 @@ public class UserController {
         }
     }
 
+    @Admin
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         try {
