@@ -4,10 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.housework.model.family.FamilyDao">
-    <select id="selectOne" resultType="Family">
+    <select id="selectOne" resultType="Family" parameterType="int">
         SELECT *
         FROM families
         WHERE id = #{id}
+    </select>
+
+    <select id="selectOneWithUsers" resultType="Family" parameterType="int">
+        SELECT families.*, users.*
+        FROM families
+                 LEFT JOIN users ON families.id = users.family_id
+        WHERE families.id = #{id}
     </select>
 
     <select id="selectAll" resultType="Family">

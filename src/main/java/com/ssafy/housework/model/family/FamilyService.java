@@ -3,9 +3,8 @@ package com.ssafy.housework.model.family;
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
 import com.ssafy.housework.model.family.dto.Family;
 import com.ssafy.housework.model.family.dto.FamilyCreate;
+import com.ssafy.housework.model.family.dto.FamilyInfo;
 import com.ssafy.housework.model.family.dto.FamilyUpdate;
-import com.ssafy.housework.model.familyMember.FamilyMemberDao;
-import com.ssafy.housework.model.task.TaskDao;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +13,9 @@ import java.util.List;
 @Service
 public class FamilyService {
     private final FamilyDao familyDao;
-    private final FamilyMemberDao familyMemberDao;
 
-    public FamilyService(FamilyDao familyDao, FamilyMemberDao familyMemberDao, TaskDao taskDao) {
+    public FamilyService(FamilyDao familyDao) {
         this.familyDao = familyDao;
-        this.familyMemberDao = familyMemberDao;
     }
 
     public Family getOne(int id) {
@@ -28,14 +25,20 @@ public class FamilyService {
             throw new ResourceNotFoundException("Family not found with id: " + id);
         }
 
-//        List<FamilyMember> members = familyMemberDao.selectByFamilyId(id);
-//        family.setMembers(members);
-
         return family;
     }
 
     public List<Family> getAll() {
         return familyDao.selectAll();
+    }
+
+    public FamilyInfo getFamilyInfo(int familyId) {
+        Family family = familyDao.selectOneWithUsers(familyId);
+        if (family == null) {
+            throw new ResourceNotFoundException("Family not found with id: " + familyId);
+        }
+
+        return family.toFamilyInfo();
     }
 
     public Family create(FamilyCreate create) throws DataAccessResourceFailureException {
