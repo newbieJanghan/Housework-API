@@ -1,7 +1,7 @@
-package com.ssafy.housework.authentication;
+package com.ssafy.housework.core.auth;
 
-import com.ssafy.housework.authentication.dto.LoginDto;
-import com.ssafy.housework.authentication.jwt.JWTUtil;
+import com.ssafy.housework.core.auth.dto.LoginDto;
+import com.ssafy.housework.core.auth.util.AuthHeaderTokenParser;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,14 +27,8 @@ public class AuthController {
     @GetMapping("/extend")
     public ResponseEntity<String> extend(HttpServletRequest request) {
         try {
-            String authHeader = request.getHeader("Authorization");
-            if (authHeader == null || authHeader.startsWith("Bearer ")) {
-                return ResponseEntity.badRequest().body("invalid token");
-            }
-
-            String token = authHeader.substring("Bearer ".length());
-            String info = JWTUtil.getInfo(token);
-            return ResponseEntity.ok(JWTUtil.generateToken(info));
+            String token = AuthHeaderTokenParser.parseBearerToken(request);
+            return ResponseEntity.ok(authService.extend(token));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

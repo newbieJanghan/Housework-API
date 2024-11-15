@@ -1,4 +1,4 @@
-package com.ssafy.housework.config;
+package com.ssafy.housework.core.config;
 
 
 import io.swagger.v3.oas.models.OpenAPI;
@@ -15,8 +15,8 @@ public class SwaggerConfig {
 
     private Info apiInfo() {
         return new Info()
-            .title("Housework REST API")
-            .description("Housework API for SSAFY 12th final project")
-            .version("0.0.1");
+                .title("Housework REST API")
+                .description("Housework API for SSAFY 12th final project")
+                .version("0.0.1");
     }
 }
