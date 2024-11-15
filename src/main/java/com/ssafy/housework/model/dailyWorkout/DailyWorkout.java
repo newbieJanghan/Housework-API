@@ -1,4 +1,4 @@
-package com.ssafy.housework.model.dailyWorkout.dto;
+package com.ssafy.housework.model.dailyWorkout;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -3,6 +3,7 @@ package com.ssafy.housework.model.user;
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
 import com.ssafy.housework.model.user.dto.User;
 import com.ssafy.housework.model.user.dto.UserCreate;
+import com.ssafy.housework.model.user.dto.UserInfo;
 import com.ssafy.housework.model.user.dto.UserUpdate;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,15 @@ public class UserService {
         }
 
         return user;
+    }
+
+    public UserInfo getUserInfo(int id) {
+        User user = userDao.selectOne(id);
+        if (user == null) {
+            throw new ResourceNotFoundException("User not found with id: " + id);
+        }
+
+        return user.toUserInfo();
     }
 
     public List<User> getAll() {

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.housework.model.workoutStat.WorkoutStatDao">
+    <select id="getUserWorkoutStat" parameterType="UserWorkoutStatQuery" resultType="WorkoutStat">
+        SELECT u.id                                                as userId,
+               SUM(IF(h.done_at IS NOT NULL, h.calorie_amount, 0)) as burnedKcal,
+               u.calorie_goal                                      as goalKcal,
+               COUNT(IF(h.done_at IS NOT NULL, h.id, NULL))        as doneHouseworkCnt,
+               COUNT(h.id)                                         as expectedHouseworkCnt
+        FROM users u
+                 LEFT JOIN houseworks h
+                           on u.id = h.assigned_user_id AND
+                              DATE(h.start_at) between DATE(#{from}) and DATE_ADD(DATE(#{to}), INTERVAL 1 DAY)
+        WHERE u.id = #{userId}
+    </select>
+
+    <select id="getFamilyWorkoutStats" parameterType="FamilyWorkoutStatsQuery" resultType="WorkoutStat">
+        SELECT u.id                                                as userId,
+               SUM(IF(h.done_at IS NOT NULL, h.calorie_amount, 0)) as burnedKcal,
+               u.calorie_goal                                      as goalKcal,
+               COUNT(IF(h.done_at IS NOT NULL, h.id, NULL))        as doneHouseworkCnt,
+               COUNT(h.id)                                         as expectedHouseworkCnt
+        FROM users u
+                 LEFT JOIN houseworks h
+                           on u.id = h.assigned_user_id AND
+                              DATE(h.start_at) between DATE(#{from}) and DATE_ADD(DATE(#{to}), INTERVAL 1 DAY)
+        WHERE u.family_id = #{familyId}
+        GROUP BY u.id;
+    </select>
+</mapper>
