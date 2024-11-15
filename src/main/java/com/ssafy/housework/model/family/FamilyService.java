@@ -1,6 +1,5 @@
 package com.ssafy.housework.model.family;
 
-import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
 import com.ssafy.housework.model.family.dto.Family;
 import com.ssafy.housework.model.family.dto.FamilyCreate;
 import com.ssafy.housework.model.family.dto.FamilyInfo;
@@ -22,7 +21,7 @@ public class FamilyService {
         Family family = familyDao.selectOne(id);
 
         if (family == null) {
-            throw new ResourceNotFoundException("Family not found with id: " + id);
+            throw new IllegalArgumentException("Family not found with id: " + id);
         }
 
         return family;
@@ -35,7 +34,7 @@ public class FamilyService {
     public FamilyInfo getFamilyInfo(int familyId) {
         Family family = familyDao.selectOneWithUsers(familyId);
         if (family == null) {
-            throw new ResourceNotFoundException("Family not found with id: " + familyId);
+            throw new IllegalArgumentException("Family not found with id: " + familyId);
         }
 
         return family.toFamilyInfo();
@@ -54,7 +53,7 @@ public class FamilyService {
     public Family update(int id, FamilyUpdate update) {
         Family family = familyDao.selectOne(id);
         if (family == null) {
-            throw new ResourceNotFoundException("Family not found with id: " + id);
+            throw new IllegalArgumentException("Family not found with id: " + id);
         }
 
         family.setId(id);
@@ -72,7 +71,7 @@ public class FamilyService {
     public void delete(int id) {
         int result = familyDao.delete(id);
         if (result == 0) {
-            throw new ResourceNotFoundException("Family not found with id: " + id);
+            throw new IllegalArgumentException("Family not found with id: " + id);
         }
     }
 }

@@ -1,10 +1,10 @@
 package com.ssafy.housework.controller;
 
 import com.ssafy.housework.core.auth.AuthService;
-import com.ssafy.housework.core.auth.dto.LoginDto;
+import com.ssafy.housework.core.auth.dto.LoginRequest;
+import com.ssafy.housework.core.auth.dto.TokenResponse;
 import com.ssafy.housework.core.auth.util.AuthHeaderTokenParser;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,22 +17,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
-        try {
-            return ResponseEntity.ok(authService.login(loginDto));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public TokenResponse login(@RequestBody LoginRequest loginRequest) {
+        return authService.login(loginRequest);
     }
 
     @GetMapping("/extend")
-    public ResponseEntity<String> extend(HttpServletRequest request) {
-        try {
-            String token = AuthHeaderTokenParser.parseBearerToken(request);
-            return ResponseEntity.ok(authService.extend(token));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public TokenResponse extend(HttpServletRequest request) {
+        String token = AuthHeaderTokenParser.parseBearerToken(request);
+        return authService.extend(token);
     }
 
 }

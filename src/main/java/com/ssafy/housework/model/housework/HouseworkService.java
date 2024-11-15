@@ -1,6 +1,5 @@
 package com.ssafy.housework.model.housework;
 
-import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
 import com.ssafy.housework.model.housework.dto.Housework;
 import com.ssafy.housework.model.housework.dto.HouseworkCreate;
 import com.ssafy.housework.model.housework.dto.HouseworkUpdate;
@@ -49,7 +48,7 @@ public class HouseworkService {
     public Housework update(int id, HouseworkUpdate houseworkUpdate) {
         Housework housework = houseworkDao.selectOne(id);
         if (housework == null) {
-            throw new ResourceNotFoundException("Housework not found with id: " + id);
+            throw new IllegalArgumentException("Housework not found with id: " + id);
         }
 
         housework.setId(id);
@@ -74,11 +73,11 @@ public class HouseworkService {
     public void delete(int id) {
         int result = houseworkDao.delete(id);
         if (result == 0) {
-            throw new ResourceNotFoundException("Housework not found with id: " + id);
+            throw new IllegalArgumentException("Housework not found with id: " + id);
         }
     }
 
     public void makeDone(Housework housework) {
-        
+
     }
 }

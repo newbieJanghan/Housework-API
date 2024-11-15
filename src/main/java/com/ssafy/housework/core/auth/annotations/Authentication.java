@@ -1,4 +1,4 @@
-package com.ssafy.housework.core.auth.interceptor.annotations;
+package com.ssafy.housework.core.auth.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

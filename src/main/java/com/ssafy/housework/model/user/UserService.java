@@ -1,6 +1,5 @@
 package com.ssafy.housework.model.user;
 
-import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
 import com.ssafy.housework.model.user.dto.User;
 import com.ssafy.housework.model.user.dto.UserCreate;
 import com.ssafy.housework.model.user.dto.UserInfo;
@@ -21,7 +20,7 @@ public class UserService {
     public User getOne(int id) {
         User user = userDao.selectOne(id);
         if (user == null) {
-            throw new ResourceNotFoundException("User not found with id: " + id);
+            throw new IllegalArgumentException("User not found with id: " + id);
         }
 
         return user;
@@ -30,7 +29,7 @@ public class UserService {
     public UserInfo getUserInfo(int id) {
         User user = userDao.selectOne(id);
         if (user == null) {
-            throw new ResourceNotFoundException("User not found with id: " + id);
+            throw new IllegalArgumentException("User not found with id: " + id);
         }
 
         return user.toUserInfo();
@@ -54,7 +53,7 @@ public class UserService {
     public User update(int id, UserUpdate userUpdate) {
         User user = userDao.selectOne(id);
         if (user == null) {
-            throw new ResourceNotFoundException("User not found with id: " + id);
+            throw new IllegalArgumentException("User not found with id: " + id);
         }
 
         user.setId(id);
@@ -74,7 +73,7 @@ public class UserService {
     public void delete(int id) {
         int result = userDao.delete(id);
         if (result == 0) {
-            throw new ResourceNotFoundException("User not found with id: " + id);
+            throw new IllegalArgumentException("User not found with id: " + id);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.ssafy.housework.core.auth.filter;
+package com.ssafy.housework.core.auth;
 
 import com.ssafy.housework.core.auth.dto.AuthenticatedUser;
 import com.ssafy.housework.core.auth.token.AuthTokenHandler;

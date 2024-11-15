@@ -1,8 +1,8 @@
-package com.ssafy.housework.core.auth.interceptor;
+package com.ssafy.housework.core.auth.dto;
 
-import com.ssafy.housework.core.auth.dto.AuthenticatedUser;
-import com.ssafy.housework.core.auth.interceptor.annotations.Admin;
-import com.ssafy.housework.core.auth.interceptor.annotations.Authentication;
+import com.ssafy.housework.core.auth.annotations.Admin;
+import com.ssafy.housework.core.auth.annotations.Authentication;
+import jakarta.security.auth.message.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -26,13 +26,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             AuthenticatedUser user = AuthenticatedUser.fromRequest(request);
 
             if (authentication != null && user == null) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-                return false;
+                throw new AuthException("Need Login");
             }
 
             if (admin != null && (user == null || !user.isAdmin())) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                return false;
+                throw new AuthException("Admin Only");
             }
         }
         return true;

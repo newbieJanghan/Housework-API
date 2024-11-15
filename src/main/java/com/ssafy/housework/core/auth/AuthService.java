@@ -1,7 +1,8 @@
 package com.ssafy.housework.core.auth;
 
 import com.ssafy.housework.core.auth.dto.AuthenticatedUser;
-import com.ssafy.housework.core.auth.dto.LoginDto;
+import com.ssafy.housework.core.auth.dto.LoginRequest;
+import com.ssafy.housework.core.auth.dto.TokenResponse;
 import com.ssafy.housework.core.auth.token.AuthTokenHandler;
 import com.ssafy.housework.model.user.UserDao;
 import com.ssafy.housework.model.user.dto.User;
@@ -19,13 +20,13 @@ public class AuthService {
         this.tokenHandler = tokenHandler;
     }
 
-    public String login(LoginDto loginDto) {
-        User user = userDao.selectByEmail(loginDto.email());
+    public TokenResponse login(LoginRequest loginRequest) {
+        User user = userDao.selectByEmail(loginRequest.email());
         if (user == null) {
-            throw new IllegalArgumentException("User not found");
+            throw new IllegalArgumentException("User with this email is not found");
         }
 
-        if (user.getPassword().equals(loginDto.password())) {
+        if (user.getPassword().equals(loginRequest.password())) {
             AuthenticatedUser authUser = new AuthenticatedUser(
                     user.getId(),
                     user.getFamilyId(),
@@ -33,18 +34,18 @@ public class AuthService {
                     user.getIsAdmin()
             );
 
-            return tokenHandler.generate(authUser);
+            return new TokenResponse(tokenHandler.generate(authUser));
         } else {
             throw new IllegalArgumentException("Password is not correct");
         }
     }
 
-    public String extend(String token) {
+    public TokenResponse extend(String token) {
         AuthenticatedUser authUser = tokenHandler.parse(token);
         if (authUser == null) {
             throw new IllegalArgumentException("Invalid token");
         }
 
-        return tokenHandler.generate(authUser);
+        return new TokenResponse(tokenHandler.generate(authUser));
     }
 }

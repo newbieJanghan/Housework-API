@@ -1,12 +1,12 @@
 package com.ssafy.housework.controller;
 
+import com.ssafy.housework.controller.exceptions.BadRequestException;
+import com.ssafy.housework.core.auth.annotations.Authentication;
 import com.ssafy.housework.core.auth.dto.AuthenticatedUser;
-import com.ssafy.housework.core.auth.interceptor.annotations.Authentication;
 import com.ssafy.housework.model.workoutStat.WorkoutStatService;
 import com.ssafy.housework.model.workoutStat.dto.FamilyWorkoutStatsQuery;
 import com.ssafy.housework.model.workoutStat.dto.UserWorkoutStatQuery;
 import com.ssafy.housework.model.workoutStat.dto.WorkoutStat;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,31 +25,21 @@ public class WorkoutStatController {
 
     @Authentication
     @GetMapping("/my")
-    public ResponseEntity<?> getUserWorkoutStat(@RequestAttribute(AuthenticatedUser.key) AuthenticatedUser user, UserWorkoutStatQuery query) {
+    public WorkoutStat getUserWorkoutStat(@RequestAttribute(AuthenticatedUser.key) AuthenticatedUser user, UserWorkoutStatQuery query) throws BadRequestException {
         if (user.userId() != query.userId()) {
-            return ResponseEntity.badRequest().body("Invalid User Id");
+            throw new BadRequestException("Invalid User Id");
         }
 
-        WorkoutStat workoutStat = workoutStatService.getUserWorkoutStat(query);
-        if (workoutStat == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(workoutStat);
+        return workoutStatService.getUserWorkoutStat(query);
     }
 
     @Authentication
     @GetMapping("/my-family")
-    public ResponseEntity<?> getFamilyWorkoutStats(@RequestAttribute(AuthenticatedUser.key) AuthenticatedUser user, FamilyWorkoutStatsQuery query) {
+    public List<WorkoutStat> getFamilyWorkoutStats(@RequestAttribute(AuthenticatedUser.key) AuthenticatedUser user, FamilyWorkoutStatsQuery query) throws BadRequestException {
         if (user.familyId() != query.familyId()) {
-            return ResponseEntity.badRequest().body("Invalid Family Id");
+            throw new BadRequestException("Invalid Family Id");
         }
 
-        List<WorkoutStat> result = workoutStatService.getFamilyWorkoutStats(query);
-        if (result.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(result);
+        return workoutStatService.getFamilyWorkoutStats(query);
     }
 }
