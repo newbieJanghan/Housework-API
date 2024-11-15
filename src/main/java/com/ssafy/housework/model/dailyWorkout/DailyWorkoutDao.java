@@ -1,5 +1,6 @@
 package com.ssafy.housework.model.dailyWorkout;
 
+import com.ssafy.housework.model.dailyWorkout.dto.DailyWorkout;
 import com.ssafy.housework.model.workoutStat.dto.FamilyWorkoutStatsQuery;
 import com.ssafy.housework.model.workoutStat.dto.WorkoutStat;
 import org.apache.ibatis.annotations.Mapper;

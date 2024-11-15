@@ -1,9 +1,8 @@
 package com.ssafy.housework.core.auth.interceptor;
 
-import com.ssafy.housework.core.auth.filter.AuthFilter;
+import com.ssafy.housework.core.auth.dto.AuthenticatedUser;
 import com.ssafy.housework.core.auth.interceptor.annotations.Admin;
-import com.ssafy.housework.core.auth.interceptor.annotations.Auth;
-import com.ssafy.housework.core.auth.token.UserTokenInfo;
+import com.ssafy.housework.core.auth.interceptor.annotations.Authentication;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -17,16 +16,16 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
-            Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
+            Authentication authentication = handlerMethod.getMethodAnnotation(Authentication.class);
             Admin admin = handlerMethod.getMethodAnnotation(Admin.class);
 
-            if (auth == null && admin == null) {
+            if (authentication == null && admin == null) {
                 return true;
             }
 
-            UserTokenInfo user = (UserTokenInfo) request.getAttribute(AuthFilter.USER_TOKEN_INFO_KEY);
+            AuthenticatedUser user = AuthenticatedUser.fromRequest(request);
 
-            if (auth != null && user == null) {
+            if (authentication != null && user == null) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 return false;
             }

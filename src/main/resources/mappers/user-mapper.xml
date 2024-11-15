@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.housework.model.user.UserDao">
-    <select id="selectOne" resultType="User">
+    <select id="selectOne" resultType="User" parameterType="int">
         SELECT *
         FROM users
         WHERE id = #{id}
@@ -15,13 +15,13 @@
         FROM users
     </select>
 
-    <select id="selectByEmail" resultType="User">
+    <select id="selectByEmail" resultType="User" parameterType="string">
         SELECT *
         FROM users
         WHERE email = #{email}
     </select>
 
-    <insert id="insert" parameterMap="User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO users (family_id, name, email, password, family_role, profile_image_name, calorie_goal)
         VALUES (#{familyId}, #{name}, #{email}, #{password}, #{familyRole}, #{profileImageName}, #{calorieGoal})
     </insert>

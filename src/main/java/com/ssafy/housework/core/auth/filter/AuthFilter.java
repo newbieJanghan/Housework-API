@@ -1,7 +1,7 @@
 package com.ssafy.housework.core.auth.filter;
 
+import com.ssafy.housework.core.auth.dto.AuthenticatedUser;
 import com.ssafy.housework.core.auth.token.AuthTokenHandler;
-import com.ssafy.housework.core.auth.token.UserTokenInfo;
 import com.ssafy.housework.core.auth.util.AuthHeaderTokenParser;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,7 +15,6 @@ import java.io.IOException;
 
 @Component
 public class AuthFilter extends OncePerRequestFilter {
-    public static final String USER_TOKEN_INFO_KEY = "userTokenInfo";
     private final AuthTokenHandler authTokenHandler;
 
     public AuthFilter(@Qualifier("jwt") AuthTokenHandler authTokenHandler) {
@@ -26,9 +25,9 @@ public class AuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = AuthHeaderTokenParser.parseBearerToken(request);
         if (token != null) {
-            UserTokenInfo userTokenInfo = authTokenHandler.parse(token);
-            if (userTokenInfo != null) {
-                request.setAttribute(USER_TOKEN_INFO_KEY, userTokenInfo);
+            AuthenticatedUser authUser = authTokenHandler.parse(token);
+            if (authUser != null) {
+                request.setAttribute(AuthenticatedUser.key, authUser);
             }
         }
 

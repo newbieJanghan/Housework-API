@@ -1,5 +1,6 @@
-package com.ssafy.housework.core.auth;
+package com.ssafy.housework.controller;
 
+import com.ssafy.housework.core.auth.AuthService;
 import com.ssafy.housework.core.auth.dto.LoginDto;
 import com.ssafy.housework.core.auth.util.AuthHeaderTokenParser;
 import jakarta.servlet.http.HttpServletRequest;
