@@ -10,11 +10,11 @@
         WHERE id = #{id};
     </select>
 
-    <select id="search" parameterType="DailyWorkoutSearch" resultType="DailyWorkout">
+    <select id="selectTodayWorkout" parameterType="int" resultType="DailyWorkout">
         SELECT *
         FROM daily_workouts
         WHERE user_id = #{userId}
-          AND DATE(created_at) = DATE(#{date})
+          AND DATE(created_at) = CURDATE();
     </select>
 
     <insert id="insert" parameterType="DailyWorkout" useGeneratedKeys="true" keyProperty="id">
