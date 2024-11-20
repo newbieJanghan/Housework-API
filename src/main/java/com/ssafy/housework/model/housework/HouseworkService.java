@@ -2,7 +2,6 @@ package com.ssafy.housework.model.housework;
 
 import com.ssafy.housework.model.housework.dto.Housework;
 import com.ssafy.housework.model.housework.dto.HouseworkCreate;
-import com.ssafy.housework.model.housework.dto.HouseworkSearch;
 import com.ssafy.housework.model.housework.dto.HouseworkUpdate;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
@@ -26,9 +25,8 @@ public class HouseworkService {
         return housework;
     }
 
-    public List<Housework> search(int familyId) {
-        HouseworkSearch search = new HouseworkSearch(familyId);
-        return houseworkDao.search(search);
+    public List<Housework> getAll() {
+        return houseworkDao.selectAll();
     }
 
     public Housework create(HouseworkCreate houseworkCreate) {

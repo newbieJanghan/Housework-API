@@ -1,7 +1,7 @@
 package com.ssafy.housework.controller;
 
 import com.ssafy.housework.core.auth.web.interceptor.annotations.Admin;
-import com.ssafy.housework.model.housework.HouseworkAdminService;
+import com.ssafy.housework.model.housework.HouseworkService;
 import com.ssafy.housework.model.housework.dto.Housework;
 import com.ssafy.housework.model.housework.dto.HouseworkCreate;
 import com.ssafy.housework.model.housework.dto.HouseworkUpdate;
@@ -13,9 +13,9 @@ import java.util.List;
 @RequestMapping("/houseworks")
 public class HouseworkController {
 
-    private final HouseworkAdminService houseworkAdminService;
+    private final HouseworkService houseworkAdminService;
 
-    public HouseworkController(HouseworkAdminService houseworkAdminService) {
+    public HouseworkController(HouseworkService houseworkAdminService) {
         this.houseworkAdminService = houseworkAdminService;
     }
 
