@@ -1,4 +1,4 @@
-package com.ssafy.housework.core.auth.token.jwt;
+package com.ssafy.housework.core.auth.web.token.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

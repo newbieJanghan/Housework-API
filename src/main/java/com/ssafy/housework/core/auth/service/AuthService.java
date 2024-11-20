@@ -1,9 +1,12 @@
-package com.ssafy.housework.core.auth;
+package com.ssafy.housework.core.auth.service;
 
-import com.ssafy.housework.core.auth.dto.AuthenticatedUser;
-import com.ssafy.housework.core.auth.dto.LoginRequest;
-import com.ssafy.housework.core.auth.dto.TokenResponse;
-import com.ssafy.housework.core.auth.token.AuthTokenHandler;
+import com.ssafy.housework.core.auth.service.dto.LoginRequest;
+import com.ssafy.housework.core.auth.service.dto.SignupRequest;
+import com.ssafy.housework.core.auth.service.dto.TokenResponse;
+import com.ssafy.housework.core.auth.web.dto.AuthUser;
+import com.ssafy.housework.core.auth.web.token.AuthTokenHandler;
+import com.ssafy.housework.model.family.FamilyDao;
+import com.ssafy.housework.model.family.dto.Family;
 import com.ssafy.housework.model.user.UserDao;
 import com.ssafy.housework.model.user.dto.User;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,7 +30,7 @@ public class AuthService {
         }
 
         if (user.getPassword().equals(loginRequest.password())) {
-            AuthenticatedUser authUser = new AuthenticatedUser(
+            AuthUser authUser = new AuthUser(
                     user.getId(),
                     user.getFamilyId(),
                     user.getEmail(),
@@ -41,7 +44,7 @@ public class AuthService {
     }
 
     public TokenResponse extend(String token) {
-        AuthenticatedUser authUser = tokenHandler.parse(token);
+        AuthUser authUser = tokenHandler.parse(token);
         if (authUser == null) {
             throw new IllegalArgumentException("Invalid token");
         }

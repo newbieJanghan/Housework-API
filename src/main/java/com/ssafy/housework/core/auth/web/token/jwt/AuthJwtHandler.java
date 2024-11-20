@@ -1,7 +1,7 @@
-package com.ssafy.housework.core.auth.token.jwt;
+package com.ssafy.housework.core.auth.web.token.jwt;
 
-import com.ssafy.housework.core.auth.dto.AuthenticatedUser;
-import com.ssafy.housework.core.auth.token.AuthTokenHandler;
+import com.ssafy.housework.core.auth.web.dto.AuthUser;
+import com.ssafy.housework.core.auth.web.token.AuthTokenHandler;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -13,12 +13,12 @@ public class AuthJwtHandler implements AuthTokenHandler {
     private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
 
     @Override
-    public String generate(AuthenticatedUser authUser) {
+    public String generate(AuthUser authUser) {
         HashMap<String, Object> header = new HashMap<>();
         header.put("typ", "JWT");
 
         Map<String, Object> body = new HashMap<>();
-        body.put("userId", authUser.userId());
+        body.put("userId", authUser.id());
         body.put("familyId", authUser.familyId());
         body.put("email", authUser.email());
         body.put("isAdmin", authUser.isAdmin());
@@ -27,11 +27,11 @@ public class AuthJwtHandler implements AuthTokenHandler {
     }
 
     @Override
-    public AuthenticatedUser parse(String token) {
+    public AuthUser parse(String token) {
         Map<String, Object> body = JwtProvider.parseToken(token);
         if (body != null) {
-            return new AuthenticatedUser(
-                    (int) body.get("userId"),
+            return new AuthUser(
+                    (int) body.get("id"),
                     (int) body.get("familyId"),
                     (String) body.get("email"),
                     (Boolean) body.get("isAdmin")

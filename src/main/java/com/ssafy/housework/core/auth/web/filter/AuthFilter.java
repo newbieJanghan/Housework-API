@@ -1,8 +1,7 @@
-package com.ssafy.housework.core.auth;
+package com.ssafy.housework.core.auth.web.filter;
 
-import com.ssafy.housework.core.auth.dto.AuthenticatedUser;
-import com.ssafy.housework.core.auth.token.AuthTokenHandler;
-import com.ssafy.housework.core.auth.util.AuthHeaderTokenParser;
+import com.ssafy.housework.core.auth.web.dto.AuthUser;
+import com.ssafy.housework.core.auth.web.token.AuthTokenHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,9 +24,9 @@ public class AuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = AuthHeaderTokenParser.parseBearerToken(request);
         if (token != null) {
-            AuthenticatedUser authUser = authTokenHandler.parse(token);
+            AuthUser authUser = authTokenHandler.parse(token);
             if (authUser != null) {
-                request.setAttribute(AuthenticatedUser.key, authUser);
+                request.setAttribute(AuthUser.key, authUser);
             }
         }
 

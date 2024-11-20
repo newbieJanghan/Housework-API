@@ -1,4 +1,4 @@
-package com.ssafy.housework.core.auth.util;
+package com.ssafy.housework.core.auth.web.filter;
 
 import jakarta.servlet.http.HttpServletRequest;
 

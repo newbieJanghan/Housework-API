@@ -1,7 +1,8 @@
-package com.ssafy.housework.core.auth.dto;
+package com.ssafy.housework.core.auth.web.interceptor;
 
-import com.ssafy.housework.core.auth.annotations.Admin;
-import com.ssafy.housework.core.auth.annotations.Authentication;
+import com.ssafy.housework.core.auth.web.dto.AuthUser;
+import com.ssafy.housework.core.auth.web.interceptor.annotations.Admin;
+import com.ssafy.housework.core.auth.web.interceptor.annotations.Authenticate;
 import jakarta.security.auth.message.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,16 +17,16 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
-            Authentication authentication = handlerMethod.getMethodAnnotation(Authentication.class);
+            Authenticate authenticate = handlerMethod.getMethodAnnotation(Authenticate.class);
             Admin admin = handlerMethod.getMethodAnnotation(Admin.class);
 
-            if (authentication == null && admin == null) {
+            if (authenticate == null && admin == null) {
                 return true;
             }
 
-            AuthenticatedUser user = AuthenticatedUser.fromRequest(request);
+            AuthUser user = AuthUser.fromRequest(request);
 
-            if (authentication != null && user == null) {
+            if (authenticate != null && user == null) {
                 throw new AuthException("Need Login");
             }
 
