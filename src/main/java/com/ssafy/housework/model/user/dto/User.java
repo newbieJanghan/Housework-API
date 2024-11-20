@@ -32,8 +32,4 @@ public class User {
         this.profileImageName = profileImageName;
         this.calorieGoal = Objects.requireNonNullElse(calorieGoal, 0);
     }
-
-    public UserInfo toUserInfo() {
-        return new UserInfo(id, familyId, name, email, profileImageName, calorieGoal);
-    }
 }

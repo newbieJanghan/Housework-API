@@ -1,6 +1,9 @@
 package com.ssafy.housework.controller;
 
-import com.ssafy.housework.core.auth.annotations.Admin;
+import com.ssafy.housework.core.auth.web.dto.AuthUser;
+import com.ssafy.housework.core.auth.web.interceptor.annotations.Admin;
+import com.ssafy.housework.core.auth.web.interceptor.annotations.Authenticate;
+import com.ssafy.housework.core.auth.web.resolvers.CurrentUser;
 import com.ssafy.housework.model.user.UserService;
 import com.ssafy.housework.model.user.dto.User;
 import com.ssafy.housework.model.user.dto.UserCreate;
@@ -19,9 +22,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Admin
+    @Authenticate
     @GetMapping("/{id}")
-    public User getUser(@PathVariable int id) {
+    public User getUser(@CurrentUser AuthUser user, @PathVariable int id) {
+        if (!user.isAdmin() && user.id() != id) {
+            throw new IllegalArgumentException("You are not allowed to access this user");
+        }
+
         return userService.getOne(id);
     }
 
@@ -31,6 +38,7 @@ public class UserController {
         return userService.getAll();
     }
 
+    @Admin
     @PostMapping
     public User createUser(@RequestBody UserCreate userCreate) {
         return userService.create(userCreate);

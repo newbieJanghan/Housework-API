@@ -1,5 +1,10 @@
 package com.ssafy.housework.controller;
 
+import com.ssafy.housework.controller.exceptions.BadRequestException;
+import com.ssafy.housework.core.auth.web.dto.AuthUser;
+import com.ssafy.housework.core.auth.web.interceptor.annotations.Admin;
+import com.ssafy.housework.core.auth.web.interceptor.annotations.Authenticate;
+import com.ssafy.housework.core.auth.web.resolvers.CurrentUser;
 import com.ssafy.housework.model.family.FamilyService;
 import com.ssafy.housework.model.family.dto.Family;
 import com.ssafy.housework.model.family.dto.FamilyCreate;
@@ -18,26 +23,37 @@ public class FamilyController {
         this.familyService = familyService;
     }
 
+    @Authenticate
     @GetMapping("/{id}")
-    public Family getFamily(@PathVariable int id) {
+    public Family getFamily(@CurrentUser AuthUser authUser, @PathVariable int id) {
+        if (!authUser.isAdmin() && authUser.familyId() != id) {
+            throw new BadRequestException("You are not a member of this family");
+        }
         return familyService.getOne(id);
     }
 
+    @Admin
     @GetMapping
     public List<Family> getAllFamilies() {
         return familyService.getAll();
     }
 
+    @Admin
     @PostMapping
     public Family createFamily(@RequestBody FamilyCreate familyCreate) {
         return familyService.create(familyCreate);
     }
 
-    @PutMapping("/{id}")
-    public Family updateFamily(@PathVariable int id, @RequestBody FamilyUpdate familyUpdate) {
+    @Authenticate
+    @PatchMapping("/{id}")
+    public Family updateFamily(@CurrentUser AuthUser authUser, @PathVariable int id, @RequestBody FamilyUpdate familyUpdate) {
+        if (authUser.familyId() != id) {
+            throw new BadRequestException("You are not a member of this family");
+        }
         return familyService.update(id, familyUpdate);
     }
 
+    @Admin
     @DeleteMapping("/{id}")
     public void deleteFamily(@PathVariable int id) {
         familyService.delete(id);

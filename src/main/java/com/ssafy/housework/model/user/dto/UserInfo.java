@@ -8,4 +8,8 @@ public record UserInfo(
         String profileImageName,
         int calorieGoal
 ) {
+
+    public static UserInfo fromUser(User user) {
+        return new UserInfo(user.getFamilyId(), user.getId(), user.getEmail(), user.getName(), user.getProfileImageName(), user.getCalorieGoal());
+    }
 }

@@ -32,7 +32,7 @@ public class UserService {
             throw new IllegalArgumentException("User not found with id: " + id);
         }
 
-        return user.toUserInfo();
+        return UserInfo.fromUser(user);
     }
 
     public List<User> getAll() {

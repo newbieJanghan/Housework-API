@@ -27,7 +27,7 @@ public class Family {
 
     public FamilyInfo toFamilyInfo() {
         List<UserInfo> userInfos = users.stream()
-                .map(User::toUserInfo)
+                .map(UserInfo::fromUser)
                 .toList();
 
         return new FamilyInfo(
