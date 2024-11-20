@@ -15,20 +15,22 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler({BadRequestException.class, IllegalArgumentException.class})
     public ErrorResponseException handleBadRequestException(Exception ex) {
         System.out.println(ex.getCause() + " / " + ex.getMessage());
-        System.out.println("in bad request , illegal argument exception method, " + ex.getClass().getName());
-        return new ErrorResponseException(HttpStatus.BAD_REQUEST, ex);
+        return makeResponse(HttpStatus.BAD_REQUEST, ex);
     }
 
     @ExceptionHandler(AuthException.class)
     public ErrorResponseException handleAuthException(AuthException ex) {
-        ProblemDetail body = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
-        return new ErrorResponseException(HttpStatus.UNAUTHORIZED, body, ex);
+        System.out.println(ex.getCause() + " / " + ex.getMessage());
+        return makeResponse(HttpStatus.UNAUTHORIZED, ex);
     }
 
     @ExceptionHandler(Exception.class)
     public ErrorResponseException handleException(Exception ex) {
         System.out.println(ex.getCause() + " / " + ex.getMessage());
-        System.out.println("in common exception method, " + ex.getClass().getName());
-        return new ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        return makeResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+    }
+
+    private ErrorResponseException makeResponse(HttpStatus status, Exception ex) {
+        return new ErrorResponseException(status, ProblemDetail.forStatusAndDetail(status, ex.getMessage()), ex);
     }
 }
