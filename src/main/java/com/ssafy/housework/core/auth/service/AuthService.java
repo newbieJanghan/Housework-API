@@ -26,18 +26,20 @@ public class AuthService {
     }
 
     public TokenResponse signup(SignupRequest signupRequest) {
-        User user = userDao.selectByEmail(signupRequest.getEmail());
+        User user = userDao.selectByEmail(signupRequest.email());
         if (user != null) {
             throw new IllegalArgumentException("User with this email already exists");
         }
 
-        if (signupRequest.getFamilyId() == null) {
-            Family family = new Family(signupRequest.getFamilyName(), null);
+        Integer familyId = signupRequest.familyId();
+        if (familyId == null) {
+            Family family = new Family(signupRequest.familyName(), null);
             familyDao.insert(family);
-            signupRequest.setFamilyId(family.getId());
+
+            familyId = family.getId();
         }
 
-        User newUser = signupRequest.toUser();
+        User newUser = signupRequest.toUser(familyId);
         userDao.insert(newUser);
 
         return new TokenResponse(tokenHandler.generate(AuthUser.of(newUser)));

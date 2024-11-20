@@ -9,8 +9,7 @@ public record HouseworkUpdate(
         String color,
         Integer calorieAmount,
         LocalDateTime startAt,
-        LocalDateTime dueAt,
-        LocalDateTime doneAt
+        LocalDateTime dueAt
 ) {
     public void setHousework(Housework housework) {
         if (this.assignedUserId() != null) housework.setAssignedUserId(this.assignedUserId());
@@ -20,7 +19,6 @@ public record HouseworkUpdate(
         if (this.calorieAmount() != null) housework.setCalorieAmount(this.calorieAmount());
         if (this.startAt() != null) housework.setStartAt(this.startAt());
         if (this.dueAt() != null) housework.setDueAt(this.dueAt());
-        if (this.doneAt() != null) housework.setDoneAt(this.doneAt());
     }
 
     public void setHousework(int registerUserId, Housework housework) {

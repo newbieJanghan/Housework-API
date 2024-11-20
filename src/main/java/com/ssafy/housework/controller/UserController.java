@@ -1,13 +1,14 @@
 package com.ssafy.housework.controller;
 
+import com.ssafy.housework.controller.exceptions.BadRequestException;
 import com.ssafy.housework.core.auth.web.dto.AuthUser;
 import com.ssafy.housework.core.auth.web.interceptor.annotations.Admin;
 import com.ssafy.housework.core.auth.web.interceptor.annotations.Authenticate;
 import com.ssafy.housework.core.auth.web.resolvers.CurrentUser;
 import com.ssafy.housework.model.user.UserService;
 import com.ssafy.housework.model.user.dto.User;
-import com.ssafy.housework.model.user.dto.UserCreate;
-import com.ssafy.housework.model.user.dto.UserUpdate;
+import com.ssafy.housework.model.user.dto.UserInfo;
+import com.ssafy.housework.model.user.dto.UserInfoUpdate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,13 +23,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Authenticate
+    @Admin
     @GetMapping("/{id}")
-    public User getUser(@CurrentUser AuthUser user, @PathVariable int id) {
-        if (!user.isAdmin() && user.id() != id) {
-            throw new IllegalArgumentException("You are not allowed to access this user");
-        }
-
+    public User getUser(@PathVariable int id) {
         return userService.getOne(id);
     }
 
@@ -40,19 +37,41 @@ public class UserController {
 
     @Admin
     @PostMapping
-    public User createUser(@RequestBody UserCreate userCreate) {
-        return userService.create(userCreate);
+    public User createUser(@RequestBody User user) {
+        return userService.create(user);
     }
 
     @Admin
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable int id, @RequestBody UserUpdate userUpdate) {
-        return userService.update(id, userUpdate);
+    public User updateUser(@PathVariable int id, @RequestBody User user) {
+        if (user.getId() != id) {
+            throw new BadRequestException("Invalid userId");
+        }
+        return userService.update(user);
     }
 
     @Admin
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable int id) {
         userService.delete(id);
+    }
+
+
+    @Authenticate
+    @GetMapping("/my")
+    public UserInfo getUser(@CurrentUser AuthUser user) {
+        return userService.getUserInfo(user.id());
+    }
+
+    @Authenticate
+    @GetMapping("/my-family")
+    public List<UserInfo> getFamilyUsers(@CurrentUser AuthUser user) {
+        return userService.getFamilyMembers(user.familyId());
+    }
+
+    @Authenticate
+    @PatchMapping("/my")
+    public UserInfo updateUserInfo(@CurrentUser AuthUser user, @RequestBody UserInfoUpdate userInfoUpdate) {
+        return userService.updateUserInfo(user.id(), userInfoUpdate);
     }
 }

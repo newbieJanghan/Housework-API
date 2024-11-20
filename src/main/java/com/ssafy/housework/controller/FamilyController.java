@@ -7,7 +7,6 @@ import com.ssafy.housework.core.auth.web.interceptor.annotations.Authenticate;
 import com.ssafy.housework.core.auth.web.resolvers.CurrentUser;
 import com.ssafy.housework.model.family.FamilyService;
 import com.ssafy.housework.model.family.dto.Family;
-import com.ssafy.housework.model.family.dto.FamilyCreate;
 import com.ssafy.housework.model.family.dto.FamilyUpdate;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +22,9 @@ public class FamilyController {
         this.familyService = familyService;
     }
 
-    @Authenticate
+    @Admin
     @GetMapping("/{id}")
-    public Family getFamily(@CurrentUser AuthUser authUser, @PathVariable int id) {
-        if (!authUser.isAdmin() && authUser.familyId() != id) {
-            throw new BadRequestException("You are not a member of this family");
-        }
+    public Family getFamily(@PathVariable int id) {
         return familyService.getOne(id);
     }
 
@@ -40,22 +36,34 @@ public class FamilyController {
 
     @Admin
     @PostMapping
-    public Family createFamily(@RequestBody FamilyCreate familyCreate) {
-        return familyService.create(familyCreate);
+    public Family createFamily(@RequestBody Family family) {
+        return familyService.create(family);
     }
 
-    @Authenticate
-    @PatchMapping("/{id}")
-    public Family updateFamily(@CurrentUser AuthUser authUser, @PathVariable int id, @RequestBody FamilyUpdate familyUpdate) {
-        if (authUser.familyId() != id) {
-            throw new BadRequestException("You are not a member of this family");
+    @Admin
+    @PutMapping("/{id}")
+    public Family updateFamily(@PathVariable int id, @RequestBody Family family) {
+        if (family.getId() != id) {
+            throw new BadRequestException("Invalid familyId");
         }
-        return familyService.update(id, familyUpdate);
+        return familyService.update(family);
     }
 
     @Admin
     @DeleteMapping("/{id}")
     public void deleteFamily(@PathVariable int id) {
         familyService.delete(id);
+    }
+
+    @Authenticate
+    @GetMapping("/my")
+    public Family getFamilyInfo(@CurrentUser AuthUser user) {
+        return familyService.getOne(user.familyId());
+    }
+
+    @Authenticate
+    @PatchMapping("/my")
+    public Family updateFamily(@CurrentUser AuthUser user, @RequestBody FamilyUpdate familyUpdate) {
+        return familyService.update(user.familyId(), familyUpdate);
     }
 }

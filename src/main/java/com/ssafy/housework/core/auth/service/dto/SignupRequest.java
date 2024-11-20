@@ -1,26 +1,25 @@
 package com.ssafy.housework.core.auth.service.dto;
 
 import com.ssafy.housework.model.user.dto.User;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.lang.Nullable;
 
-@Getter
-@NoArgsConstructor
-public class SignupRequest {
-    @Setter
-    Integer familyId;
-    String name;
-    String email;
-    String password;
-    String familyName;
+public record SignupRequest(
+        @Nullable Integer familyId,
+        @NotNull String name,
+        @NotNull String email,
+        @NotNull String password,
+        @Nullable String familyName,
+        @Nullable String profileImageName,
+        @Nullable Integer caloriesGoal
+) {
 
-    public String getFamilyName() {
+    public String familyName() {
         return familyName == null ? name + "'s Family" : familyName;
     }
 
-    public User toUser() {
-        return new User(familyId, name, email, password, null, 0);
+    public User toUser(int familyId) {
+        return new User(this.familyId() == null ? familyId : this.familyId(), name, email, password, profileImageName, caloriesGoal);
     }
 
 }

@@ -36,4 +36,33 @@
         FROM houseworks
         WHERE id = #{id}
     </delete>
+
+    <select id="selectOneOfFamily">
+        SELECT *
+        FROM houseworks
+        WHERE family_id = #{familyId}
+          AND id = #{id}
+    </select>
+
+    <select id="queryOfFamily">
+        SELECT *
+        FROM houseworks
+        WHERE family_id = #{familyId}
+        <if test="from != null">
+            AND start_at >= #{from}
+        </if>
+        <if test="to != null">
+            <![CDATA[AND start_at <= #{to}]]]>
+        </if>
+        <if test="assignedUserId != null">
+            AND assigned_user_id = #{assignedUserId}
+        </if>
+    </select>
+
+    <delete id="deleteOfFamily">
+        DELETE
+        FROM houseworks
+        WHERE family_id = #{familyId}
+          AND id = #{id}
+    </delete>
 </mapper>

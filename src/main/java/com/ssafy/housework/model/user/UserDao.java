@@ -13,6 +13,8 @@ public interface UserDao {
 
     User selectByEmail(String email);
 
+    List<User> selectByFamilyId(int familyId);
+
     int insert(User user);
 
     int update(User user);

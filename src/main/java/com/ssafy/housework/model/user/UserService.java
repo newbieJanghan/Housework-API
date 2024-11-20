@@ -1,9 +1,8 @@
 package com.ssafy.housework.model.user;
 
 import com.ssafy.housework.model.user.dto.User;
-import com.ssafy.housework.model.user.dto.UserCreate;
 import com.ssafy.housework.model.user.dto.UserInfo;
-import com.ssafy.housework.model.user.dto.UserUpdate;
+import com.ssafy.housework.model.user.dto.UserInfoUpdate;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
 
@@ -26,22 +25,11 @@ public class UserService {
         return user;
     }
 
-    public UserInfo getUserInfo(int id) {
-        User user = userDao.selectOne(id);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found with id: " + id);
-        }
-
-        return UserInfo.fromUser(user);
-    }
-
     public List<User> getAll() {
         return userDao.selectAll();
     }
 
-    public User create(UserCreate userCreate) {
-        User user = new User(userCreate.familyId(), userCreate.name(), userCreate.email(), userCreate.password(), userCreate.profileImageUrl(), userCreate.calorieGoal());
-
+    public User create(User user) {
         int result = userDao.insert(user);
         if (result == 0) {
             throw new DataAccessResourceFailureException("Failed to create user");
@@ -50,30 +38,51 @@ public class UserService {
         return user;
     }
 
-    public User update(int id, UserUpdate userUpdate) {
+    public User update(User user) {
+        int result = userDao.update(user);
+        if (result == 0) {
+            throw new DataAccessResourceFailureException("Failed to update user with id: " + user.getId());
+        }
+
+        return user;
+    }
+
+    public UserInfo getUserInfo(int id) {
         User user = userDao.selectOne(id);
         if (user == null) {
             throw new IllegalArgumentException("User not found with id: " + id);
         }
 
-        user.setId(id);
-        if (userUpdate.name() != null) user.setName(userUpdate.name());
-        if (userUpdate.password() != null) user.setPassword(userUpdate.password());
-        if (userUpdate.profileImageUrl() != null) user.setProfileImageName(userUpdate.profileImageUrl());
-        if (userUpdate.calorieGoal() != null) user.setCalorieGoal(userUpdate.calorieGoal());
+        return UserInfo.of(user);
+    }
+
+    public List<UserInfo> getFamilyMembers(int familyId) {
+        List<User> users = userDao.selectByFamilyId(familyId);
+
+        return UserInfo.of(users);
+    }
+
+    public UserInfo updateUserInfo(int id, UserInfoUpdate userInfoUpdate) {
+        User user = userDao.selectOne(id);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found with id: " + id);
+        }
+
+        userInfoUpdate.setUser(user);
 
         int result = userDao.update(user);
         if (result == 0) {
             throw new DataAccessResourceFailureException("Failed to update user with id: " + id);
         }
 
-        return userDao.selectOne(id);
+        user = userDao.selectOne(id);
+        return UserInfo.of(user);
     }
 
     public void delete(int id) {
         int result = userDao.delete(id);
         if (result == 0) {
-            throw new IllegalArgumentException("User not found with id: " + id);
+            throw new IllegalArgumentException("Failed to delete user with id: " + id);
         }
     }
 }

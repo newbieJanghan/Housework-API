@@ -21,6 +21,12 @@
         WHERE email = #{email}
     </select>
 
+    <select id="selectByFamilyId" resultType="User" parameterType="int">
+        SELECT *
+        FROM users
+        WHERE family_id = #{familyId}
+    </select>
+
     <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO users (family_id, name, email, password, family_role, profile_image_name, calorie_goal)
         VALUES (#{familyId}, #{name}, #{email}, #{password}, #{familyRole}, #{profileImageName}, #{calorieGoal})

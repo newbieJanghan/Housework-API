@@ -9,8 +9,6 @@ import java.util.List;
 public interface FamilyDao {
     Family selectOne(int id);
 
-    Family selectOneWithUsers(int id);
-
     List<Family> selectAll();
 
     int insert(Family family);

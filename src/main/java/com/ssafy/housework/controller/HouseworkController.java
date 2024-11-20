@@ -1,10 +1,8 @@
 package com.ssafy.housework.controller;
 
 import com.ssafy.housework.core.auth.web.interceptor.annotations.Admin;
-import com.ssafy.housework.model.housework.HouseworkService;
+import com.ssafy.housework.model.housework.HouseworkAdminService;
 import com.ssafy.housework.model.housework.dto.Housework;
-import com.ssafy.housework.model.housework.dto.HouseworkCreate;
-import com.ssafy.housework.model.housework.dto.HouseworkUpdate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +11,9 @@ import java.util.List;
 @RequestMapping("/houseworks")
 public class HouseworkController {
 
-    private final HouseworkService houseworkAdminService;
+    private final HouseworkAdminService houseworkAdminService;
 
-    public HouseworkController(HouseworkService houseworkAdminService) {
+    public HouseworkController(HouseworkAdminService houseworkAdminService) {
         this.houseworkAdminService = houseworkAdminService;
     }
 
@@ -33,14 +31,14 @@ public class HouseworkController {
 
     @Admin
     @PostMapping
-    public Housework createHousework(@RequestBody HouseworkCreate houseworkCreate) {
-        return houseworkAdminService.create(houseworkCreate);
+    public Housework createHousework(@RequestBody Housework housework) {
+        return houseworkAdminService.create(housework);
     }
 
     @Admin
     @PutMapping("/{id}")
-    public Housework updateHousework(@PathVariable int id, @RequestBody HouseworkUpdate houseworkUpdate) {
-        return houseworkAdminService.update(id, houseworkUpdate);
+    public Housework updateHousework(@PathVariable int id, @RequestBody Housework housework) {
+        return houseworkAdminService.update(id, housework);
     }
 
     @Admin
