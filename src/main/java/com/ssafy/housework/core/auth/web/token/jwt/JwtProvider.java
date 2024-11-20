@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 
 import java.security.Key;
 import java.util.Date;
@@ -23,7 +24,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    public static Map<String, Object> parseToken(String token) {
+    public static Map<String, Object> parseToken(String token) throws SignatureException {
         Claims body = Jwts.parserBuilder()
                 .setSigningKey(key).build()
                 .parseClaimsJws(token)

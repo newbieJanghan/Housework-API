@@ -22,14 +22,19 @@ public class AuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = AuthHeaderTokenParser.parseBearerToken(request);
-        if (token != null) {
-            AuthUser authUser = authTokenHandler.parse(token);
-            if (authUser != null) {
-                request.setAttribute(AuthUser.key, authUser);
+        try {
+            String token = AuthHeaderTokenParser.parseBearerToken(request);
+            if (token != null) {
+                AuthUser authUser = authTokenHandler.parse(token);
+                if (authUser != null) {
+                    request.setAttribute(AuthUser.key, authUser);
+                }
             }
+
+            filterChain.doFilter(request, response);
+        } catch (InvalidTokenException ex) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
         }
 
-        filterChain.doFilter(request, response);
     }
 }

@@ -1,7 +1,9 @@
 package com.ssafy.housework.core.auth.web.token.jwt;
 
 import com.ssafy.housework.core.auth.web.dto.AuthUser;
+import com.ssafy.housework.core.auth.web.filter.InvalidTokenException;
 import com.ssafy.housework.core.auth.web.token.AuthTokenHandler;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -31,14 +33,19 @@ public class AuthJwtHandler implements AuthTokenHandler {
 
     @Override
     public AuthUser parse(String token) {
-        Map<String, Object> body = JwtProvider.parseToken(token);
-        if (body != null) {
-            return new AuthUser(
-                    (int) body.get(KEY_ID),
-                    (int) body.get(KEY_FAMILY_ID),
-                    (String) body.get(KEY_EMAIL),
-                    (Boolean) body.get(KEY_IS_ADMIN)
-            );
+        try {
+            Map<String, Object> body = JwtProvider.parseToken(token);
+            if (body != null) {
+                return new AuthUser(
+                        (int) body.get(KEY_ID),
+                        (int) body.get(KEY_FAMILY_ID),
+                        (String) body.get(KEY_EMAIL),
+                        (Boolean) body.get(KEY_IS_ADMIN)
+                );
+            }
+        } catch (SignatureException ex) {
+            System.out.println(ex.getMessage());
+            throw new InvalidTokenException();
         }
 
         return null;
