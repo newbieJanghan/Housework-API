@@ -9,8 +9,11 @@ import java.util.Map;
 
 @Component("jwt")
 public class AuthJwtHandler implements AuthTokenHandler {
-    //    private final String SECRET_KEY = "1!8dz@*^!SDd+-df1_2I*827sx";
     private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
+    private final String KEY_ID = "id";
+    private final String KEY_FAMILY_ID = "familyId";
+    private final String KEY_EMAIL = "email";
+    private final String KEY_IS_ADMIN = "isAdmin";
 
     @Override
     public String generate(AuthUser authUser) {
@@ -18,10 +21,10 @@ public class AuthJwtHandler implements AuthTokenHandler {
         header.put("typ", "JWT");
 
         Map<String, Object> body = new HashMap<>();
-        body.put("userId", authUser.id());
-        body.put("familyId", authUser.familyId());
-        body.put("email", authUser.email());
-        body.put("isAdmin", authUser.isAdmin());
+        body.put(KEY_ID, authUser.id());
+        body.put(KEY_FAMILY_ID, authUser.familyId());
+        body.put(KEY_EMAIL, authUser.email());
+        body.put(KEY_IS_ADMIN, authUser.isAdmin());
 
         return JwtProvider.generateToken(header, body, EXPIRATION_TIME);
     }
@@ -31,10 +34,10 @@ public class AuthJwtHandler implements AuthTokenHandler {
         Map<String, Object> body = JwtProvider.parseToken(token);
         if (body != null) {
             return new AuthUser(
-                    (int) body.get("id"),
-                    (int) body.get("familyId"),
-                    (String) body.get("email"),
-                    (Boolean) body.get("isAdmin")
+                    (int) body.get(KEY_ID),
+                    (int) body.get(KEY_FAMILY_ID),
+                    (String) body.get(KEY_EMAIL),
+                    (Boolean) body.get(KEY_IS_ADMIN)
             );
         }
 
