@@ -1,11 +1,11 @@
 package com.ssafy.housework.core.auth.web.dto;
 
-import jakarta.servlet.http.HttpServletRequest;
+import com.ssafy.housework.model.user.dto.User;
 
 public record AuthUser(int id, int familyId, String email, Boolean isAdmin) {
     public static final String key = "auth-user";
 
-    public static AuthUser fromRequest(HttpServletRequest request) {
-        return (AuthUser) request.getAttribute(key);
+    public static AuthUser of(User user) {
+        return new AuthUser(user.getId(), user.getFamilyId(), user.getEmail(), user.getIsAdmin());
     }
 }

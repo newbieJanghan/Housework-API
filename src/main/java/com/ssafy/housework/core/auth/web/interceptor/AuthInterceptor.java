@@ -24,7 +24,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                 return true;
             }
 
-            AuthUser user = AuthUser.fromRequest(request);
+            AuthUser user = (AuthUser) request.getAttribute(AuthUser.key);
 
             if (authenticate != null && user == null) {
                 throw new AuthException("Need Login");

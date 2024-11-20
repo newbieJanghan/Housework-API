@@ -1,9 +1,10 @@
 package com.ssafy.housework.controller;
 
-import com.ssafy.housework.core.auth.AuthService;
-import com.ssafy.housework.core.auth.dto.LoginRequest;
-import com.ssafy.housework.core.auth.dto.TokenResponse;
-import com.ssafy.housework.core.auth.util.AuthHeaderTokenParser;
+import com.ssafy.housework.core.auth.service.AuthService;
+import com.ssafy.housework.core.auth.service.dto.LoginRequest;
+import com.ssafy.housework.core.auth.service.dto.SignupRequest;
+import com.ssafy.housework.core.auth.service.dto.TokenResponse;
+import com.ssafy.housework.core.auth.web.filter.AuthHeaderTokenParser;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,11 @@ public class AuthController {
 
     public AuthController(AuthService authService) {
         this.authService = authService;
+    }
+
+    @PostMapping("/signup")
+    public TokenResponse signup(@RequestBody SignupRequest signupRequest) {
+        return authService.signup(signupRequest);
     }
 
     @PostMapping("/login")

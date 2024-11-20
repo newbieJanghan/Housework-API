@@ -16,11 +16,31 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
     private final UserDao userDao;
+    private final FamilyDao familyDao;
     private final AuthTokenHandler tokenHandler;
 
-    public AuthService(UserDao userDao, @Qualifier("jwt") AuthTokenHandler tokenHandler) {
+    public AuthService(UserDao userDao, FamilyDao familyDao, @Qualifier("jwt") AuthTokenHandler tokenHandler) {
         this.userDao = userDao;
+        this.familyDao = familyDao;
         this.tokenHandler = tokenHandler;
+    }
+
+    public TokenResponse signup(SignupRequest signupRequest) {
+        User user = userDao.selectByEmail(signupRequest.getEmail());
+        if (user != null) {
+            throw new IllegalArgumentException("User with this email already exists");
+        }
+
+        if (signupRequest.getFamilyId() == null) {
+            Family family = new Family(signupRequest.getFamilyName(), null);
+            familyDao.insert(family);
+            signupRequest.setFamilyId(family.getId());
+        }
+
+        User newUser = signupRequest.toUser();
+        userDao.insert(newUser);
+
+        return new TokenResponse(tokenHandler.generate(AuthUser.of(newUser)));
     }
 
     public TokenResponse login(LoginRequest loginRequest) {
@@ -30,14 +50,7 @@ public class AuthService {
         }
 
         if (user.getPassword().equals(loginRequest.password())) {
-            AuthUser authUser = new AuthUser(
-                    user.getId(),
-                    user.getFamilyId(),
-                    user.getEmail(),
-                    user.getIsAdmin()
-            );
-
-            return new TokenResponse(tokenHandler.generate(authUser));
+            return new TokenResponse(tokenHandler.generate(AuthUser.of(user)));
         } else {
             throw new IllegalArgumentException("Password is not correct");
         }
