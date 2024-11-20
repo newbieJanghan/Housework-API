@@ -1,17 +1,15 @@
 package com.ssafy.housework.core.auth.service.dto;
 
 import com.ssafy.housework.model.user.dto.User;
-import jakarta.validation.constraints.NotNull;
-import org.springframework.lang.Nullable;
 
 public record SignupRequest(
-        @Nullable Integer familyId,
-        @NotNull String name,
-        @NotNull String email,
-        @NotNull String password,
-        @Nullable String familyName,
-        @Nullable String profileImageName,
-        @Nullable Integer caloriesGoal
+        Integer familyId,
+        String name,
+        String email,
+        String password,
+        String familyName,
+        String profileImageName,
+        Integer caloriesGoal
 ) {
 
     public String familyName() {
