@@ -44,15 +44,13 @@
           AND id = #{id}
     </select>
 
-    <select id="queryOfFamily">
+    <select id="queryOfFamily" parameterType="HouseworkQuery">
         SELECT *
         FROM houseworks
         WHERE family_id = #{familyId}
-        <if test="from != null">
+        <if test="from != null and to != null">
             AND start_at >= #{from}
-        </if>
-        <if test="to != null">
-            <![CDATA[AND start_at <= #{to}]]]>
+            <![CDATA[AND start_at <= #{to}]]>
         </if>
         <if test="assignedUserId != null">
             AND assigned_user_id = #{assignedUserId}

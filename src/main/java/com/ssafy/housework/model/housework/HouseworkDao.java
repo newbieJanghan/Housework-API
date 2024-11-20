@@ -1,11 +1,10 @@
 package com.ssafy.housework.model.housework;
 
 import com.ssafy.housework.model.housework.dto.Housework;
-import jakarta.annotation.Nullable;
+import com.ssafy.housework.model.housework.dto.HouseworkQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -23,12 +22,7 @@ public interface HouseworkDao {
 
     Housework selectOneOfFamily(@Param("familyId") int familyId, @Param("id") int id);
 
-    List<Housework> queryOfFamily(
-            @Param("familyId") int familyId,
-            @Param("assignedUserId") Integer assignedUserId,
-            @Param("from") @Nullable LocalDateTime from,
-            @Param("to") @Nullable LocalDateTime to
-    );
+    List<Housework> queryOfFamily(HouseworkQuery query);
 
     int deleteOfFamily(@Param("familyId") int familyId, @Param("id") int id);
 }

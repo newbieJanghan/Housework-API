@@ -2,8 +2,8 @@ package com.ssafy.housework.model.housework;
 
 import com.ssafy.housework.model.housework.dto.Housework;
 import com.ssafy.housework.model.housework.dto.HouseworkCreate;
+import com.ssafy.housework.model.housework.dto.HouseworkQuery;
 import com.ssafy.housework.model.housework.dto.HouseworkUpdate;
-import com.ssafy.housework.model.utils.DateQuery;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class HouseworkService {
     }
 
     public Housework getOne(int familyId, int id) {
-        Housework housework = houseworkDao.selectOneOfFamily(id, familyId);
+        Housework housework = houseworkDao.selectOneOfFamily(familyId, id);
         if (housework == null) {
             throw new IllegalArgumentException("Housework not found with id: " + id);
         }
@@ -27,8 +27,8 @@ public class HouseworkService {
         return housework;
     }
 
-    public List<Housework> query(int familyId, Integer assignedUserId, DateQuery date) {
-        return houseworkDao.queryOfFamily(familyId, assignedUserId, date.from(), date.to());
+    public List<Housework> query(int familyId, LocalDateTime from, LocalDateTime to, Integer assignedUserId) {
+        return houseworkDao.queryOfFamily(new HouseworkQuery(familyId, assignedUserId, from, to));
     }
 
     public Housework create(int familyId, int registerUserId, HouseworkCreate houseworkCreate) {
