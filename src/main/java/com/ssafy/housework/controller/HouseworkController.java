@@ -1,6 +1,7 @@
 package com.ssafy.housework.controller;
 
-import com.ssafy.housework.model.housework.HouseworkService;
+import com.ssafy.housework.core.auth.web.interceptor.annotations.Admin;
+import com.ssafy.housework.model.housework.HouseworkAdminService;
 import com.ssafy.housework.model.housework.dto.Housework;
 import com.ssafy.housework.model.housework.dto.HouseworkCreate;
 import com.ssafy.housework.model.housework.dto.HouseworkUpdate;
@@ -12,34 +13,39 @@ import java.util.List;
 @RequestMapping("/houseworks")
 public class HouseworkController {
 
-    private final HouseworkService houseworkService;
+    private final HouseworkAdminService houseworkAdminService;
 
-    public HouseworkController(HouseworkService houseworkService) {
-        this.houseworkService = houseworkService;
+    public HouseworkController(HouseworkAdminService houseworkAdminService) {
+        this.houseworkAdminService = houseworkAdminService;
     }
 
+    @Admin
     @GetMapping("/{id}")
     public Housework getHousework(@PathVariable int id) {
-        return houseworkService.getOne(id);
+        return houseworkAdminService.getOne(id);
     }
 
+    @Admin
     @GetMapping
     public List<Housework> getAllHouseworks() {
-        return houseworkService.getAll();
+        return houseworkAdminService.getAll();
     }
 
+    @Admin
     @PostMapping
     public Housework createHousework(@RequestBody HouseworkCreate houseworkCreate) {
-        return houseworkService.create(houseworkCreate);
+        return houseworkAdminService.create(houseworkCreate);
     }
 
+    @Admin
     @PutMapping("/{id}")
     public Housework updateHousework(@PathVariable int id, @RequestBody HouseworkUpdate houseworkUpdate) {
-        return houseworkService.update(id, houseworkUpdate);
+        return houseworkAdminService.update(id, houseworkUpdate);
     }
 
+    @Admin
     @DeleteMapping("/{id}")
     public void deleteHousework(@PathVariable int id) {
-        houseworkService.delete(id);
+        houseworkAdminService.delete(id);
     }
 }

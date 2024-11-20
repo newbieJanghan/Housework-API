@@ -1,10 +1,10 @@
-package com.ssafy.housework.model.housework.dto;
+package com.ssafy.housework.model.familyHousework.dto;
+
+import com.ssafy.housework.model.housework.dto.Housework;
 
 import java.time.LocalDateTime;
 
-public record HouseworkCreate(
-        int familyId,
-        int registerUserId,
+public record FamilyHouseworkCreate(
         int assignedUserId,
         String name,
         String description,
@@ -13,10 +13,10 @@ public record HouseworkCreate(
         LocalDateTime startAt,
         LocalDateTime dueAt
 ) {
-    public Housework toHousework() {
+    public Housework toHousework(int familyId, int registerUserId) {
         return new Housework(
-                this.familyId(),
-                this.registerUserId(),
+                familyId,
+                registerUserId,
                 this.assignedUserId(),
                 this.name(),
                 this.description(),
