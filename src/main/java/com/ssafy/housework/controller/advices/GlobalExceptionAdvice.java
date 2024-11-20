@@ -1,7 +1,7 @@
 package com.ssafy.housework.controller.advices;
 
 import com.ssafy.housework.controller.exceptions.BadRequestException;
-import com.ssafy.housework.core.auth.AuthException;
+import com.ssafy.housework.core.auth.service.AuthException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
