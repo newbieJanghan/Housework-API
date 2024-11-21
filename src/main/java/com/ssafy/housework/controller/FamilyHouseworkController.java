@@ -37,12 +37,14 @@ public class FamilyHouseworkController {
     @Authenticate
     @PostMapping
     public Housework createHousework(@CurrentUser AuthUser user, @RequestBody HouseworkCreate houseworkCreate) {
+        houseworkCreate.validate();
         return houseworkService.create(user.familyId(), user.id(), houseworkCreate);
     }
 
     @Authenticate
     @PatchMapping("/{id}")
     public Housework updateHousework(@CurrentUser AuthUser user, @PathVariable int id, @RequestBody HouseworkUpdate houseworkUpdate) {
+        houseworkUpdate.validate();
         return houseworkService.update(user.familyId(), id, houseworkUpdate);
     }
 

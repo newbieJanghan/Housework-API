@@ -1,32 +1,35 @@
 package com.ssafy.housework.model.housework.dto;
 
-import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDateTime;
 
 public record HouseworkCreate(
-        @NotNull int assignedUserId,
-        @NotNull String name,
+        int assignedUserId,
+        String name,
         String description,
         String color,
         int calorieAmount,
-        @NotNull LocalDateTime startAt,
-        @NotNull LocalDateTime dueAt
+        LocalDateTime startAt,
+        LocalDateTime dueAt
 ) {
-    public HouseworkCreate {
-        if (assignedUserId <= 0) {
+
+    public void validate() {
+        if (this.assignedUserId() <= 0) {
             throw new IllegalArgumentException("Assigned user id must be positive");
         }
 
-        if (name == null || name.isBlank()) {
+        if (this.name() == null || this.name().isBlank()) {
             throw new IllegalArgumentException("Name must not be null or blank");
         }
 
-        if (startAt == null || dueAt == null) {
+        if (this.calorieAmount() < 0) {
+            throw new IllegalArgumentException("Calorie amount must be positive");
+        }
+
+        if (this.startAt() == null || this.dueAt() == null) {
             throw new IllegalArgumentException("Start at and due at must not be null");
         }
 
-        if (startAt.isAfter(dueAt)) {
+        if (this.startAt().isAfter(this.dueAt())) {
             throw new IllegalArgumentException("Start at must be before due at");
         }
     }

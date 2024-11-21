@@ -11,6 +11,16 @@ public record HouseworkUpdate(
         LocalDateTime startAt,
         LocalDateTime dueAt
 ) {
+    public void validate() {
+        if (calorieAmount != null && this.calorieAmount() < 0) {
+            throw new IllegalArgumentException("Calorie amount must be positive");
+        }
+
+        if (this.startAt() != null && this.dueAt() != null && this.startAt().isAfter(this.dueAt())) {
+            throw new IllegalArgumentException("Start at must be before due at");
+        }
+    }
+
     public void setHousework(Housework housework) {
         if (this.assignedUserId() != null) housework.setAssignedUserId(this.assignedUserId());
         if (this.name() != null) housework.setName(this.name());
