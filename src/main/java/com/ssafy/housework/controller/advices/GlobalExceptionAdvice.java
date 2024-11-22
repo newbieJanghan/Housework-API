@@ -5,12 +5,13 @@ import com.ssafy.housework.core.auth.exceptions.AdminOnlyException;
 import com.ssafy.housework.core.auth.interceptor.token.InvalidTokenException;
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
+import org.springframework.http.*;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @Slf4j
@@ -32,14 +33,27 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ErrorResponse handleInternalException(Throwable ex) {
         log.error("Exception from service", ex);
+
         HttpStatus innerStatusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+        
         if (ex instanceof IllegalArgumentException) {
             innerStatusCode = HttpStatus.BAD_REQUEST;
         } else if (ex instanceof ResourceNotFoundException) {
             innerStatusCode = HttpStatus.NOT_FOUND;
         }
+        // TODO, not handled exception should not return detail message
 
         return build(HttpStatus.OK, ex, innerStatusCode);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        if (ex.getRootCause() instanceof IllegalArgumentException) {
+            ProblemDetail body = this.buildBody(HttpStatus.BAD_REQUEST, ex.getRootCause());
+            return new ResponseEntity<>(body, HttpStatus.OK);
+        }
+
+        return super.handleHttpMessageNotReadable(ex, headers, status, request);
     }
 
     private ErrorResponse build(HttpStatus status, Throwable ex) {

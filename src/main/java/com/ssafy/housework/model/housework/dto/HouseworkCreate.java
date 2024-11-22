@@ -11,25 +11,24 @@ public record HouseworkCreate(
         LocalDateTime startAt,
         LocalDateTime dueAt
 ) {
-
     public HouseworkCreate {
-        if (this.assignedUserId() <= 0) {
+        if (assignedUserId <= 0) {
             throw new IllegalArgumentException("Assigned user id must be positive");
         }
 
-        if (this.name() == null || this.name().isBlank()) {
+        if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name must not be null or blank");
         }
 
-        if (this.calorieAmount() < 0) {
+        if (calorieAmount < 0) {
             throw new IllegalArgumentException("Calorie amount must be positive");
         }
 
-        if (this.startAt() == null || this.dueAt() == null) {
+        if (startAt == null || dueAt == null) {
             throw new IllegalArgumentException("Start at and due at must not be null");
         }
 
-        if (this.startAt().isAfter(this.dueAt())) {
+        if (startAt.isAfter(dueAt)) {
             throw new IllegalArgumentException("Start at must be before due at");
         }
     }

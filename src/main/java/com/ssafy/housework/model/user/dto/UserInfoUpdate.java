@@ -2,9 +2,9 @@ package com.ssafy.housework.model.user.dto;
 
 public record UserInfoUpdate(String name, String password, String profileImageName, Integer calorieGoal) {
     public void setUser(User user) {
-        if (name() != null) user.setName(name());
-        if (password() != null) user.setPassword(password());
-        if (profileImageName() != null) user.setProfileImageName(profileImageName());
-        if (calorieGoal() != null) user.setCalorieGoal(calorieGoal());
+        if (this.name() != null) user.setName(this.name());
+        if (this.password() != null) user.setPassword(this.password());
+        if (this.profileImageName() != null) user.setProfileImageName(this.profileImageName());
+        if (this.calorieGoal() != null) user.setCalorieGoal(this.calorieGoal());
     }
 }

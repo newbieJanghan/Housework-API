@@ -11,12 +11,12 @@ public record HouseworkUpdate(
         LocalDateTime startAt,
         LocalDateTime dueAt
 ) {
-    public void validate() {
-        if (calorieAmount != null && this.calorieAmount() < 0) {
+    public HouseworkUpdate {
+        if (calorieAmount != null && calorieAmount < 0) {
             throw new IllegalArgumentException("Calorie amount must be positive");
         }
 
-        if (this.startAt() != null && this.dueAt() != null && this.startAt().isAfter(this.dueAt())) {
+        if (startAt != null && dueAt != null && startAt.isAfter(dueAt)) {
             throw new IllegalArgumentException("Start at must be before due at");
         }
     }
