@@ -10,8 +10,6 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import java.util.List;
-
 @RestControllerAdvice
 public class ResponseEntityAdvice implements ResponseBodyAdvice<Object> {
 
@@ -26,10 +24,6 @@ public class ResponseEntityAdvice implements ResponseBodyAdvice<Object> {
                                   ServerHttpRequest request, ServerHttpResponse response) {
 
         if (request.getMethod().equals(HttpMethod.DELETE)) {
-            return ResponseEntity.noContent().build();
-        }
-
-        if (body == null || (body instanceof List<?> && ((List<?>) body).isEmpty())) {
             return ResponseEntity.noContent().build();
         }
 
