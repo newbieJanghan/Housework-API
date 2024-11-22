@@ -38,7 +38,7 @@ public class HouseworkService {
             throw new DataAccessResourceFailureException("Failed to create housework");
         }
 
-        return housework;
+        return houseworkDao.selectOne(housework.getId());
     }
 
     public Housework update(int familyId, int id, HouseworkUpdate houseworkUpdate) {

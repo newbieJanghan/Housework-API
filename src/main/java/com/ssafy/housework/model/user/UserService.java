@@ -35,7 +35,7 @@ public class UserService {
             throw new DataAccessResourceFailureException("Failed to create user");
         }
 
-        return user;
+        return userDao.selectOne(user.getId());
     }
 
     public User update(User user) {
@@ -44,7 +44,7 @@ public class UserService {
             throw new DataAccessResourceFailureException("Failed to update user with id: " + user.getId());
         }
 
-        return user;
+        return userDao.selectOne(user.getId());
     }
 
     public UserInfo getUserInfo(int id) {

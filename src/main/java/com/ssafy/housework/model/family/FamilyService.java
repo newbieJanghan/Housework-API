@@ -35,7 +35,7 @@ public class FamilyService {
             throw new DataAccessResourceFailureException("Failed to create family");
         }
 
-        return family;
+        return familyDao.selectOne(family.getId());
     }
 
     public Family update(Family family) {
@@ -60,7 +60,7 @@ public class FamilyService {
             throw new DataAccessResourceFailureException("Failed to update family with id: " + familyId);
         }
 
-        return family;
+        return familyDao.selectOne(familyId);
     }
 
     public void delete(int id) {
