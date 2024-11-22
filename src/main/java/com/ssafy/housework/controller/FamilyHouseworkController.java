@@ -28,7 +28,7 @@ public class FamilyHouseworkController {
     public Housework getHousework(@CurrentUser AuthUser user, @PathVariable int id) {
         return houseworkService.getOne(user.familyId(), id);
     }
-    
+
     @Authenticate
     @GetMapping
     public List<Housework> getAllHouseworks(@CurrentUser AuthUser user, @RequestParam(required = false) Integer assignedUserId, DateQueryParams dateQuery) {
@@ -38,6 +38,7 @@ public class FamilyHouseworkController {
     @Authenticate
     @PostMapping
     public Housework createHousework(@CurrentUser AuthUser user, @RequestBody HouseworkCreate houseworkCreate) {
+        // TODO. if handling request body error can be done at advice, validate method can be removed
         houseworkCreate.validate();
         return houseworkService.create(user.familyId(), user.id(), houseworkCreate);
     }
