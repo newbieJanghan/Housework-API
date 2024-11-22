@@ -1,6 +1,7 @@
 package com.ssafy.housework.controller;
 
 import com.ssafy.housework.controller.exceptions.BadRequestException;
+import com.ssafy.housework.controller.utils.DateQueryParams;
 import com.ssafy.housework.core.auth.web.dto.AuthUser;
 import com.ssafy.housework.core.auth.web.interceptor.annotations.Authenticate;
 import com.ssafy.housework.core.auth.web.resolvers.CurrentUser;
@@ -25,21 +26,13 @@ public class WorkoutStatController {
 
     @Authenticate
     @GetMapping("/my")
-    public WorkoutStat getUserWorkoutStat(@CurrentUser AuthUser user, UserWorkoutStatQuery query) throws BadRequestException {
-        if (user.id() != query.userId()) {
-            throw new BadRequestException("Invalid User Id");
-        }
-
-        return workoutStatService.getUserWorkoutStat(query);
+    public WorkoutStat getUserWorkoutStat(@CurrentUser AuthUser user, DateQueryParams dateQuery) throws BadRequestException {
+        return workoutStatService.getUserWorkoutStat(new UserWorkoutStatQuery(user.id(), dateQuery.from(), dateQuery.to()));
     }
 
     @Authenticate
     @GetMapping("/my-family")
-    public List<WorkoutStat> getFamilyWorkoutStats(@CurrentUser AuthUser user, FamilyWorkoutStatsQuery query) throws BadRequestException {
-        if (user.familyId() != query.familyId()) {
-            throw new BadRequestException("Invalid Family Id");
-        }
-
-        return workoutStatService.getFamilyWorkoutStats(query);
+    public List<WorkoutStat> getFamilyWorkoutStats(@CurrentUser AuthUser user, DateQueryParams dateQuery) throws BadRequestException {
+        return workoutStatService.getFamilyWorkoutStats(new FamilyWorkoutStatsQuery(user.familyId(), dateQuery.from(), dateQuery.to()));
     }
 }

@@ -28,6 +28,7 @@ public class FamilyHouseworkController {
         return houseworkService.getOne(user.familyId(), id);
     }
 
+    // TODO> query parameter record class로 변경
     @Authenticate
     @GetMapping
     public List<Housework> getAllHouseworks(@CurrentUser AuthUser user, @RequestParam LocalDateTime from, LocalDateTime to, @RequestParam(required = false) Integer assignedUserId) {
