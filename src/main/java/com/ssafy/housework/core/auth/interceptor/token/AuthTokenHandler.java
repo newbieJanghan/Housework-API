@@ -1,9 +1,9 @@
 package com.ssafy.housework.core.auth.interceptor.token;
 
-import com.ssafy.housework.core.auth.interceptor.dto.AuthUser;
+import com.ssafy.housework.core.auth.interceptor.dto.CurrentUser;
 
 public interface AuthTokenHandler {
-    String generate(AuthUser authUser);
+    String generate(CurrentUser currentUser);
 
-    AuthUser parse(String token) throws InvalidTokenException;
+    CurrentUser parse(String token) throws InvalidTokenException;
 }

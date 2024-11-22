@@ -1,6 +1,6 @@
 package com.ssafy.housework.core.auth.service;
 
-import com.ssafy.housework.core.auth.interceptor.dto.AuthUser;
+import com.ssafy.housework.core.auth.interceptor.dto.CurrentUser;
 import com.ssafy.housework.core.auth.interceptor.token.AuthTokenHandler;
 import com.ssafy.housework.core.auth.service.dto.LoginRequest;
 import com.ssafy.housework.core.auth.service.dto.SignupRequest;
@@ -42,7 +42,7 @@ public class AuthService {
         User newUser = signupRequest.toUser(familyId);
         userDao.insert(newUser);
 
-        return new TokenResponse(tokenHandler.generate(AuthUser.of(newUser)));
+        return new TokenResponse(tokenHandler.generate(CurrentUser.of(newUser)));
     }
 
     public TokenResponse login(LoginRequest loginRequest) {
@@ -52,18 +52,18 @@ public class AuthService {
         }
 
         if (user.getPassword().equals(loginRequest.password())) {
-            return new TokenResponse(tokenHandler.generate(AuthUser.of(user)));
+            return new TokenResponse(tokenHandler.generate(CurrentUser.of(user)));
         } else {
             throw new IllegalArgumentException("Password is not correct");
         }
     }
 
     public TokenResponse extend(String token) {
-        AuthUser authUser = tokenHandler.parse(token);
-        if (authUser == null) {
+        CurrentUser currentUser = tokenHandler.parse(token);
+        if (currentUser == null) {
             throw new IllegalArgumentException("Invalid token");
         }
 
-        return new TokenResponse(tokenHandler.generate(authUser));
+        return new TokenResponse(tokenHandler.generate(currentUser));
     }
 }

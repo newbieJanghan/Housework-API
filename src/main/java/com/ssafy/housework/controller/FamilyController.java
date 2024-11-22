@@ -2,8 +2,8 @@ package com.ssafy.housework.controller;
 
 import com.ssafy.housework.core.auth.interceptor.annotations.Admin;
 import com.ssafy.housework.core.auth.interceptor.annotations.Authenticate;
-import com.ssafy.housework.core.auth.interceptor.dto.AuthUser;
-import com.ssafy.housework.core.auth.interceptor.resolvers.CurrentUser;
+import com.ssafy.housework.core.auth.interceptor.dto.CurrentUser;
+import com.ssafy.housework.core.auth.interceptor.resolvers.RequestUser;
 import com.ssafy.housework.model.exceptions.BadRequestException;
 import com.ssafy.housework.model.family.FamilyService;
 import com.ssafy.housework.model.family.dto.Family;
@@ -57,13 +57,13 @@ public class FamilyController {
 
     @Authenticate
     @GetMapping("/my")
-    public Family getFamilyInfo(@CurrentUser AuthUser user) {
+    public Family getFamilyInfo(@RequestUser CurrentUser user) {
         return familyService.getOne(user.familyId());
     }
 
     @Authenticate
     @PatchMapping("/my")
-    public Family updateFamily(@CurrentUser AuthUser user, @RequestBody FamilyUpdate familyUpdate) {
+    public Family updateFamily(@RequestUser CurrentUser user, @RequestBody FamilyUpdate familyUpdate) {
         return familyService.update(user.familyId(), familyUpdate);
     }
 }

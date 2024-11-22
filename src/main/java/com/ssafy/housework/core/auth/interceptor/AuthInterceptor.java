@@ -4,7 +4,7 @@ import com.ssafy.housework.core.auth.exceptions.AuthException;
 import com.ssafy.housework.core.auth.exceptions.ForbiddenException;
 import com.ssafy.housework.core.auth.interceptor.annotations.Admin;
 import com.ssafy.housework.core.auth.interceptor.annotations.Authenticate;
-import com.ssafy.housework.core.auth.interceptor.dto.AuthUser;
+import com.ssafy.housework.core.auth.interceptor.dto.CurrentUser;
 import com.ssafy.housework.core.auth.interceptor.token.AuthTokenHandler;
 import com.ssafy.housework.core.auth.interceptor.token.RequestHeaderParser;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +34,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                 return true;
             }
 
-            AuthUser user = parseToken(request);
+            CurrentUser user = parseToken(request);
             if (user == null) {
                 throw new AuthException("Need Login");
             }
@@ -48,7 +48,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     @Nullable
-    private AuthUser parseToken(HttpServletRequest request) {
+    private CurrentUser parseToken(HttpServletRequest request) {
         String bearerToken = RequestHeaderParser.parseBearerToken(request);
         if (bearerToken == null) {
             return null;

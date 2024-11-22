@@ -1,7 +1,7 @@
 package com.ssafy.housework.core.config;
 
 import com.ssafy.housework.core.auth.interceptor.AuthInterceptor;
-import com.ssafy.housework.core.auth.interceptor.resolvers.CurrentUserArgumentResolver;
+import com.ssafy.housework.core.auth.interceptor.resolvers.RequestUserArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new CurrentUserArgumentResolver());
+        resolvers.add(new RequestUserArgumentResolver());
     }
 
     @Override

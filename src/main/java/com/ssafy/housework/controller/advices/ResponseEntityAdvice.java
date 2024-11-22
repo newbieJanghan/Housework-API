@@ -17,8 +17,6 @@ public class ResponseEntityAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-        // 모든 컨트롤러 메서드에 적용
-
         return true;
     }
 
@@ -31,10 +29,10 @@ public class ResponseEntityAdvice implements ResponseBodyAdvice<Object> {
             return ResponseEntity.noContent().build();
         }
 
-
         if (body == null || (body instanceof List<?> && ((List<?>) body).isEmpty())) {
             return ResponseEntity.noContent().build();
         }
+
         return ResponseEntity.ok(body);
     }
 }
