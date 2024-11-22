@@ -21,13 +21,13 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler({InvalidTokenException.class, AmbiguousTargetException.class})
     public ErrorResponse handleBadRequestException(Throwable ex) {
         log.error("Bad Request Exception", ex);
-        return build(HttpStatus.BAD_REQUEST, ex);
+        return presentationErrorException(HttpStatus.BAD_REQUEST, ex);
     }
 
     @ExceptionHandler(AdminOnlyException.class)
     public ErrorResponse handleForbiddenException(Throwable ex) {
         log.error("Forbidden Exception", ex);
-        return build(HttpStatus.FORBIDDEN, ex);
+        return presentationErrorException(HttpStatus.FORBIDDEN, ex);
     }
 
     @ExceptionHandler(Exception.class)
@@ -35,7 +35,7 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
         log.error("Exception from service", ex);
 
         HttpStatus innerStatusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-        
+
         if (ex instanceof IllegalArgumentException) {
             innerStatusCode = HttpStatus.BAD_REQUEST;
         } else if (ex instanceof ResourceNotFoundException) {
@@ -43,7 +43,7 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
         }
         // TODO, not handled exception should not return detail message
 
-        return build(HttpStatus.OK, ex, innerStatusCode);
+        return serviceErrorResponse(ex, innerStatusCode);
     }
 
     @Override
@@ -56,12 +56,12 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
         return super.handleHttpMessageNotReadable(ex, headers, status, request);
     }
 
-    private ErrorResponse build(HttpStatus status, Throwable ex) {
+    private ErrorResponse presentationErrorException(HttpStatus status, Throwable ex) {
         return new ErrorResponseException(status, buildBody(status, ex), ex);
     }
 
-    private ErrorResponse build(HttpStatus status, Throwable ex, HttpStatus bodyStatus) {
-        return new ErrorResponseException(status, buildBody(bodyStatus, ex), ex);
+    private ErrorResponse serviceErrorResponse(Throwable ex, HttpStatus bodyStatus) {
+        return new ErrorResponseException(HttpStatus.OK, buildBody(bodyStatus, ex), ex);
     }
 
     private ProblemDetail buildBody(HttpStatus status, Throwable ex) {
