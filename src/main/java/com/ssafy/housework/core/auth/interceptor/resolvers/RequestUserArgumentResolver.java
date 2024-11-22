@@ -1,6 +1,6 @@
-package com.ssafy.housework.core.auth.web.resolvers;
+package com.ssafy.housework.core.auth.interceptor.resolvers;
 
-import com.ssafy.housework.core.auth.web.dto.AuthUser;
+import com.ssafy.housework.core.auth.interceptor.dto.AuthUser;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -11,7 +11,7 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterAnnotation(com.ssafy.housework.core.auth.web.resolvers.CurrentUser.class) != null;
+        return parameter.getParameterAnnotation(com.ssafy.housework.core.auth.interceptor.resolvers.CurrentUser.class) != null;
     }
 
     @Override

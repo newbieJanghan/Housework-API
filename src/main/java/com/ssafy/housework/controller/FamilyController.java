@@ -1,10 +1,10 @@
 package com.ssafy.housework.controller;
 
-import com.ssafy.housework.controller.exceptions.BadRequestException;
-import com.ssafy.housework.core.auth.web.dto.AuthUser;
-import com.ssafy.housework.core.auth.web.interceptor.annotations.Admin;
-import com.ssafy.housework.core.auth.web.interceptor.annotations.Authenticate;
-import com.ssafy.housework.core.auth.web.resolvers.CurrentUser;
+import com.ssafy.housework.core.auth.interceptor.annotations.Admin;
+import com.ssafy.housework.core.auth.interceptor.annotations.Authenticate;
+import com.ssafy.housework.core.auth.interceptor.dto.AuthUser;
+import com.ssafy.housework.core.auth.interceptor.resolvers.CurrentUser;
+import com.ssafy.housework.model.exceptions.BadRequestException;
 import com.ssafy.housework.model.family.FamilyService;
 import com.ssafy.housework.model.family.dto.Family;
 import com.ssafy.housework.model.family.dto.FamilyUpdate;

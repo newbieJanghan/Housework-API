@@ -1,9 +1,9 @@
 package com.ssafy.housework.controller;
 
 import com.ssafy.housework.controller.utils.DateQueryParams;
-import com.ssafy.housework.core.auth.web.dto.AuthUser;
-import com.ssafy.housework.core.auth.web.interceptor.annotations.Authenticate;
-import com.ssafy.housework.core.auth.web.resolvers.CurrentUser;
+import com.ssafy.housework.core.auth.interceptor.annotations.Authenticate;
+import com.ssafy.housework.core.auth.interceptor.dto.AuthUser;
+import com.ssafy.housework.core.auth.interceptor.resolvers.CurrentUser;
 import com.ssafy.housework.model.housework.HouseworkService;
 import com.ssafy.housework.model.housework.dto.Housework;
 import com.ssafy.housework.model.housework.dto.HouseworkCreate;
@@ -39,14 +39,14 @@ public class FamilyHouseworkController {
     @PostMapping
     public Housework createHousework(@CurrentUser AuthUser user, @RequestBody HouseworkCreate houseworkCreate) {
         // TODO. if handling request body error can be done at advice, validate method can be removed
-        houseworkCreate.validate();
+//        houseworkCreate.validate();
         return houseworkService.create(user.familyId(), user.id(), houseworkCreate);
     }
 
     @Authenticate
     @PatchMapping("/{id}")
     public Housework updateHousework(@CurrentUser AuthUser user, @PathVariable int id, @RequestBody HouseworkUpdate houseworkUpdate) {
-        houseworkUpdate.validate();
+//        houseworkUpdate.validate();
         return houseworkService.update(user.familyId(), id, houseworkUpdate);
     }
 

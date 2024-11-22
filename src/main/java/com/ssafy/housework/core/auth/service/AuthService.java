@@ -1,10 +1,10 @@
 package com.ssafy.housework.core.auth.service;
 
+import com.ssafy.housework.core.auth.interceptor.dto.AuthUser;
+import com.ssafy.housework.core.auth.interceptor.token.AuthTokenHandler;
 import com.ssafy.housework.core.auth.service.dto.LoginRequest;
 import com.ssafy.housework.core.auth.service.dto.SignupRequest;
 import com.ssafy.housework.core.auth.service.dto.TokenResponse;
-import com.ssafy.housework.core.auth.web.dto.AuthUser;
-import com.ssafy.housework.core.auth.web.token.AuthTokenHandler;
 import com.ssafy.housework.model.family.FamilyDao;
 import com.ssafy.housework.model.family.dto.Family;
 import com.ssafy.housework.model.user.UserDao;

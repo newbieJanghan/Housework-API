@@ -1,8 +1,8 @@
-package com.ssafy.housework.core.auth.web.filter;
+package com.ssafy.housework.core.auth.interceptor.token;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class AuthHeaderTokenParser {
+public class RequestHeaderParser {
     public static String parseBearerToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {

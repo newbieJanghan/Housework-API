@@ -1,14 +1,16 @@
-package com.ssafy.housework.core.auth.web.token.jwt;
+package com.ssafy.housework.core.auth.interceptor.token.jwt;
 
-import com.ssafy.housework.core.auth.web.dto.AuthUser;
-import com.ssafy.housework.core.auth.web.filter.InvalidTokenException;
-import com.ssafy.housework.core.auth.web.token.AuthTokenHandler;
+import com.ssafy.housework.core.auth.interceptor.dto.AuthUser;
+import com.ssafy.housework.core.auth.interceptor.token.AuthTokenHandler;
+import com.ssafy.housework.core.auth.interceptor.token.InvalidTokenException;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Component("jwt")
 public class AuthJwtHandler implements AuthTokenHandler {
     private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
@@ -35,19 +37,20 @@ public class AuthJwtHandler implements AuthTokenHandler {
     public AuthUser parse(String token) {
         try {
             Map<String, Object> body = JwtProvider.parseToken(token);
-            if (body != null) {
-                return new AuthUser(
-                        (int) body.get(KEY_ID),
-                        (int) body.get(KEY_FAMILY_ID),
-                        (String) body.get(KEY_EMAIL),
-                        (Boolean) body.get(KEY_IS_ADMIN)
-                );
-            }
-        } catch (SignatureException ex) {
-            System.out.println(ex.getMessage());
-            throw new InvalidTokenException();
-        }
 
-        return null;
+            if (body == null) {
+                throw new InvalidTokenException("Token is expired");
+            }
+
+            return new AuthUser(
+                    (int) body.get(KEY_ID),
+                    (int) body.get(KEY_FAMILY_ID),
+                    (String) body.get(KEY_EMAIL),
+                    (Boolean) body.get(KEY_IS_ADMIN)
+            );
+
+        } catch (SignatureException ex) {
+            throw new InvalidTokenException(ex);
+        }
     }
 }

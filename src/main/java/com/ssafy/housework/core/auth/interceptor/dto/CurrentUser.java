@@ -1,4 +1,4 @@
-package com.ssafy.housework.core.auth.web.dto;
+package com.ssafy.housework.core.auth.interceptor.dto;
 
 import com.ssafy.housework.model.user.dto.User;
 

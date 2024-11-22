@@ -1,10 +1,10 @@
 package com.ssafy.housework.controller;
 
+import com.ssafy.housework.core.auth.interceptor.token.RequestHeaderParser;
 import com.ssafy.housework.core.auth.service.AuthService;
 import com.ssafy.housework.core.auth.service.dto.LoginRequest;
 import com.ssafy.housework.core.auth.service.dto.SignupRequest;
 import com.ssafy.housework.core.auth.service.dto.TokenResponse;
-import com.ssafy.housework.core.auth.web.filter.AuthHeaderTokenParser;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +29,7 @@ public class AuthController {
 
     @GetMapping("/extend")
     public TokenResponse extend(HttpServletRequest request) {
-        String token = AuthHeaderTokenParser.parseBearerToken(request);
+        String token = RequestHeaderParser.parseBearerToken(request);
         return authService.extend(token);
     }
 

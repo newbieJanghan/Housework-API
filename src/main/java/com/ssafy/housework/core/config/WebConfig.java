@@ -1,7 +1,7 @@
 package com.ssafy.housework.core.config;
 
-import com.ssafy.housework.core.auth.web.interceptor.AuthInterceptor;
-import com.ssafy.housework.core.auth.web.resolvers.CurrentUserArgumentResolver;
+import com.ssafy.housework.core.auth.interceptor.AuthInterceptor;
+import com.ssafy.housework.core.auth.interceptor.resolvers.CurrentUserArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -12,10 +12,17 @@ import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+    private final AuthInterceptor authInterceptor;
+
+    public WebConfig(AuthInterceptor authInterceptor) {
+        this.authInterceptor = authInterceptor;
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor())
-                .addPathPatterns("/**");
+        registry.addInterceptor(authInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/auth/**");
     }
 
     @Override

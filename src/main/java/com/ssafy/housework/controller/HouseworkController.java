@@ -1,6 +1,6 @@
 package com.ssafy.housework.controller;
 
-import com.ssafy.housework.core.auth.web.interceptor.annotations.Admin;
+import com.ssafy.housework.core.auth.interceptor.annotations.Admin;
 import com.ssafy.housework.model.housework.HouseworkAdminService;
 import com.ssafy.housework.model.housework.dto.Housework;
 import org.springframework.web.bind.annotation.*;
