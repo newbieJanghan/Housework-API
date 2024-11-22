@@ -27,8 +27,8 @@ public class HouseworkService {
         return housework;
     }
 
-    public List<Housework> query(int familyId, LocalDateTime from, LocalDateTime to, Integer assignedUserId) {
-        return houseworkDao.queryOfFamily(new HouseworkQuery(familyId, assignedUserId, from, to));
+    public List<Housework> query(HouseworkQuery houseworkQuery) {
+        return houseworkDao.queryOfFamily(houseworkQuery);
     }
 
     public Housework create(int familyId, int registerUserId, HouseworkCreate houseworkCreate) {

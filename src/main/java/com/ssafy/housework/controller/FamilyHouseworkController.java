@@ -1,15 +1,16 @@
 package com.ssafy.housework.controller;
 
+import com.ssafy.housework.controller.utils.DateQueryParams;
 import com.ssafy.housework.core.auth.web.dto.AuthUser;
 import com.ssafy.housework.core.auth.web.interceptor.annotations.Authenticate;
 import com.ssafy.housework.core.auth.web.resolvers.CurrentUser;
 import com.ssafy.housework.model.housework.HouseworkService;
 import com.ssafy.housework.model.housework.dto.Housework;
 import com.ssafy.housework.model.housework.dto.HouseworkCreate;
+import com.ssafy.housework.model.housework.dto.HouseworkQuery;
 import com.ssafy.housework.model.housework.dto.HouseworkUpdate;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -27,12 +28,11 @@ public class FamilyHouseworkController {
     public Housework getHousework(@CurrentUser AuthUser user, @PathVariable int id) {
         return houseworkService.getOne(user.familyId(), id);
     }
-
-    // TODO> query parameter record class로 변경
+    
     @Authenticate
     @GetMapping
-    public List<Housework> getAllHouseworks(@CurrentUser AuthUser user, @RequestParam LocalDateTime from, LocalDateTime to, @RequestParam(required = false) Integer assignedUserId) {
-        return houseworkService.query(user.familyId(), from, to, assignedUserId);
+    public List<Housework> getAllHouseworks(@CurrentUser AuthUser user, @RequestParam(required = false) Integer assignedUserId, DateQueryParams dateQuery) {
+        return houseworkService.query(new HouseworkQuery(user.familyId(), assignedUserId, dateQuery.from(), dateQuery.to()));
     }
 
     @Authenticate
