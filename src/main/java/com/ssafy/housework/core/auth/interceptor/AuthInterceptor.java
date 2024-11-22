@@ -1,11 +1,11 @@
 package com.ssafy.housework.core.auth.interceptor;
 
-import com.ssafy.housework.core.auth.exceptions.AuthException;
-import com.ssafy.housework.core.auth.exceptions.ForbiddenException;
+import com.ssafy.housework.core.auth.exceptions.AdminOnlyException;
 import com.ssafy.housework.core.auth.interceptor.annotations.Admin;
 import com.ssafy.housework.core.auth.interceptor.annotations.Authenticate;
 import com.ssafy.housework.core.auth.interceptor.dto.CurrentUser;
 import com.ssafy.housework.core.auth.interceptor.token.AuthTokenHandler;
+import com.ssafy.housework.core.auth.interceptor.token.InvalidTokenException;
 import com.ssafy.housework.core.auth.interceptor.token.RequestHeaderParser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,12 +36,14 @@ public class AuthInterceptor implements HandlerInterceptor {
 
             CurrentUser user = parseToken(request);
             if (user == null) {
-                throw new AuthException("Need Login");
+                throw new InvalidTokenException("Need Login");
             }
 
             if (admin != null && !user.isAdmin()) {
-                throw new ForbiddenException("Admin Only");
+                throw new AdminOnlyException("Admin Only");
             }
+
+            request.setAttribute(CurrentUser.key, user);
         }
 
         return true;

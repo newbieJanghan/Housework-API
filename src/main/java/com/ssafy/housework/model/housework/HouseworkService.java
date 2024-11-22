@@ -1,10 +1,10 @@
 package com.ssafy.housework.model.housework;
 
+import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
 import com.ssafy.housework.model.housework.dto.Housework;
 import com.ssafy.housework.model.housework.dto.HouseworkCreate;
 import com.ssafy.housework.model.housework.dto.HouseworkQuery;
 import com.ssafy.housework.model.housework.dto.HouseworkUpdate;
-import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,7 +21,7 @@ public class HouseworkService {
     public Housework getOne(int familyId, int id) {
         Housework housework = houseworkDao.selectOneOfFamily(familyId, id);
         if (housework == null) {
-            throw new IllegalArgumentException("Housework not found with id: " + id);
+            throw new ResourceNotFoundException("Housework not found with id: " + id);
         }
 
         return housework;
@@ -35,7 +35,7 @@ public class HouseworkService {
         Housework housework = houseworkCreate.toHousework(familyId, registerUserId);
         int result = houseworkDao.insert(housework);
         if (result == 0) {
-            throw new DataAccessResourceFailureException("Failed to create housework");
+            throw new RuntimeException("Failed to create housework");
         }
 
         return houseworkDao.selectOne(housework.getId());
@@ -47,7 +47,7 @@ public class HouseworkService {
 
         int result = houseworkDao.update(housework);
         if (result == 0) {
-            throw new DataAccessResourceFailureException("Failed to update housework with id: " + id);
+            throw new ResourceNotFoundException("Failed to update housework with id: " + id);
         }
 
         return houseworkDao.selectOne(id);
@@ -59,7 +59,7 @@ public class HouseworkService {
 
         int result = houseworkDao.update(housework);
         if (result == 0) {
-            throw new DataAccessResourceFailureException("Failed to update housework with id: " + id);
+            throw new ResourceNotFoundException("Failed to update housework with id: " + id);
         }
 
         return houseworkDao.selectOne(id);
@@ -69,7 +69,7 @@ public class HouseworkService {
     public void delete(int familyId, int id) {
         int result = houseworkDao.deleteOfFamily(familyId, id);
         if (result == 0) {
-            throw new DataAccessResourceFailureException("Failed to delete housework with id: " + id);
+            throw new ResourceNotFoundException("Failed to delete housework with id: " + id);
         }
     }
 }

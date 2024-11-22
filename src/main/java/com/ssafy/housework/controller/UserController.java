@@ -1,10 +1,10 @@
 package com.ssafy.housework.controller;
 
+import com.ssafy.housework.controller.exceptions.AmbiguousTargetException;
 import com.ssafy.housework.core.auth.interceptor.annotations.Admin;
 import com.ssafy.housework.core.auth.interceptor.annotations.Authenticate;
 import com.ssafy.housework.core.auth.interceptor.dto.CurrentUser;
 import com.ssafy.housework.core.auth.interceptor.resolvers.RequestUser;
-import com.ssafy.housework.model.exceptions.BadRequestException;
 import com.ssafy.housework.model.user.UserService;
 import com.ssafy.housework.model.user.dto.User;
 import com.ssafy.housework.model.user.dto.UserInfo;
@@ -45,7 +45,7 @@ public class UserController {
     @PutMapping("/{id}")
     public User updateUser(@PathVariable int id, @RequestBody User user) {
         if (user.getId() != id) {
-            throw new BadRequestException("Invalid userId");
+            throw new AmbiguousTargetException();
         }
         return userService.update(user);
     }

@@ -12,7 +12,7 @@ public record HouseworkCreate(
         LocalDateTime dueAt
 ) {
 
-    public void validate() {
+    public HouseworkCreate {
         if (this.assignedUserId() <= 0) {
             throw new IllegalArgumentException("Assigned user id must be positive");
         }

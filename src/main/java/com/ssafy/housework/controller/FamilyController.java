@@ -1,10 +1,10 @@
 package com.ssafy.housework.controller;
 
+import com.ssafy.housework.controller.exceptions.AmbiguousTargetException;
 import com.ssafy.housework.core.auth.interceptor.annotations.Admin;
 import com.ssafy.housework.core.auth.interceptor.annotations.Authenticate;
 import com.ssafy.housework.core.auth.interceptor.dto.CurrentUser;
 import com.ssafy.housework.core.auth.interceptor.resolvers.RequestUser;
-import com.ssafy.housework.model.exceptions.BadRequestException;
 import com.ssafy.housework.model.family.FamilyService;
 import com.ssafy.housework.model.family.dto.Family;
 import com.ssafy.housework.model.family.dto.FamilyUpdate;
@@ -44,7 +44,7 @@ public class FamilyController {
     @PutMapping("/{id}")
     public Family updateFamily(@PathVariable int id, @RequestBody Family family) {
         if (family.getId() != id) {
-            throw new BadRequestException("Invalid familyId");
+            throw new AmbiguousTargetException();
         }
         return familyService.update(family);
     }

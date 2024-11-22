@@ -1,8 +1,8 @@
 package com.ssafy.housework.model.family;
 
+import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
 import com.ssafy.housework.model.family.dto.Family;
 import com.ssafy.housework.model.family.dto.FamilyUpdate;
-import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +17,8 @@ public class FamilyService {
 
     public Family getOne(int id) {
         Family family = familyDao.selectOne(id);
-
         if (family == null) {
-            throw new IllegalArgumentException("Family not found with id: " + id);
+            throw new ResourceNotFoundException("Family not found with id: " + id);
         }
 
         return family;
@@ -32,7 +31,7 @@ public class FamilyService {
     public Family create(Family family) {
         int result = familyDao.insert(family);
         if (result == 0) {
-            throw new DataAccessResourceFailureException("Failed to create family");
+            throw new RuntimeException("Failed to create family");
         }
 
         return familyDao.selectOne(family.getId());
@@ -41,23 +40,19 @@ public class FamilyService {
     public Family update(Family family) {
         int result = familyDao.update(family);
         if (result == 0) {
-            throw new DataAccessResourceFailureException("Failed to update family with id: " + family.getId());
+            throw new ResourceNotFoundException("Failed to update family with id: " + family.getId());
         }
 
         return familyDao.selectOne(family.getId());
     }
 
     public Family update(int familyId, FamilyUpdate familyUpdate) {
-        Family family = familyDao.selectOne(familyId);
-        if (family == null) {
-            throw new IllegalArgumentException("Family not found with id: " + familyId);
-        }
-
+        Family family = this.getOne(familyId);
         familyUpdate.setFamily(family);
 
         int result = familyDao.update(family);
         if (result == 0) {
-            throw new DataAccessResourceFailureException("Failed to update family with id: " + familyId);
+            throw new ResourceNotFoundException("Failed to update family with id: " + familyId);
         }
 
         return familyDao.selectOne(familyId);
@@ -66,7 +61,7 @@ public class FamilyService {
     public void delete(int id) {
         int result = familyDao.delete(id);
         if (result == 0) {
-            throw new IllegalArgumentException("Failed to delete family with id: " + id);
+            throw new ResourceNotFoundException("Failed to delete family with id: " + id);
         }
     }
 }

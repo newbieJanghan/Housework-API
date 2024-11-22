@@ -1,9 +1,9 @@
 package com.ssafy.housework.model.user;
 
+import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
 import com.ssafy.housework.model.user.dto.User;
 import com.ssafy.housework.model.user.dto.UserInfo;
 import com.ssafy.housework.model.user.dto.UserInfoUpdate;
-import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class UserService {
     public User getOne(int id) {
         User user = userDao.selectOne(id);
         if (user == null) {
-            throw new IllegalArgumentException("User not found with id: " + id);
+            throw new ResourceNotFoundException("User not found with id: " + id);
         }
 
         return user;
@@ -32,7 +32,7 @@ public class UserService {
     public User create(User user) {
         int result = userDao.insert(user);
         if (result == 0) {
-            throw new DataAccessResourceFailureException("Failed to create user");
+            throw new RuntimeException("Failed to create user");
         }
 
         return userDao.selectOne(user.getId());
@@ -41,7 +41,7 @@ public class UserService {
     public User update(User user) {
         int result = userDao.update(user);
         if (result == 0) {
-            throw new DataAccessResourceFailureException("Failed to update user with id: " + user.getId());
+            throw new ResourceNotFoundException("Failed to update user with id: " + user.getId());
         }
 
         return userDao.selectOne(user.getId());
@@ -50,7 +50,7 @@ public class UserService {
     public UserInfo getUserInfo(int id) {
         User user = userDao.selectOne(id);
         if (user == null) {
-            throw new IllegalArgumentException("User not found with id: " + id);
+            throw new ResourceNotFoundException("User not found with id: " + id);
         }
 
         return UserInfo.of(user);
@@ -63,16 +63,12 @@ public class UserService {
     }
 
     public UserInfo updateUserInfo(int id, UserInfoUpdate userInfoUpdate) {
-        User user = userDao.selectOne(id);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found with id: " + id);
-        }
-
+        User user = this.getOne(id);
         userInfoUpdate.setUser(user);
 
         int result = userDao.update(user);
         if (result == 0) {
-            throw new DataAccessResourceFailureException("Failed to update user with id: " + id);
+            throw new ResourceNotFoundException("Failed to update user with id: " + id);
         }
 
         user = userDao.selectOne(id);
@@ -82,7 +78,7 @@ public class UserService {
     public void delete(int id) {
         int result = userDao.delete(id);
         if (result == 0) {
-            throw new IllegalArgumentException("Failed to delete user with id: " + id);
+            throw new ResourceNotFoundException("Failed to delete user with id: " + id);
         }
     }
 }
