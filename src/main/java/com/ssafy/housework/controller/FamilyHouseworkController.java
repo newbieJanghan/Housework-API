@@ -32,6 +32,7 @@ public class FamilyHouseworkController {
     @Authenticate
     @GetMapping
     public List<Housework> getAllHouseworks(@RequestUser CurrentUser user, @RequestParam(required = false) Integer assignedUserId, DateQueryParams dateQuery) {
+        System.out.println(dateQuery);
         return houseworkService.query(new HouseworkQuery(user.familyId(), assignedUserId, dateQuery.from(), dateQuery.to()));
     }
 
