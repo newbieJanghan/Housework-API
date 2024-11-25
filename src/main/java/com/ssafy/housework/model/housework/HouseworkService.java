@@ -1,5 +1,6 @@
 package com.ssafy.housework.model.housework;
 
+import com.ssafy.housework.core.utils.TimeUtil;
 import com.ssafy.housework.model.exceptions.ResourceNotFoundException;
 import com.ssafy.housework.model.housework.dto.Housework;
 import com.ssafy.housework.model.housework.dto.HouseworkCreate;
@@ -7,7 +8,6 @@ import com.ssafy.housework.model.housework.dto.HouseworkQuery;
 import com.ssafy.housework.model.housework.dto.HouseworkUpdate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -55,7 +55,7 @@ public class HouseworkService {
 
     public Housework complete(int familyId, int id) {
         Housework housework = this.getOne(familyId, id);
-        housework.setDoneAt(LocalDateTime.now());
+        housework.setDoneAt(TimeUtil.now());
 
         int result = houseworkDao.update(housework);
         if (result == 0) {
