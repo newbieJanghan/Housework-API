@@ -57,6 +57,12 @@ public class FamilyHouseworkController {
     }
 
     @Authenticate
+    @PatchMapping("/{id}/ongoing")
+    public Housework ongoingHousework(@RequestUser CurrentUser user, @PathVariable int id) {
+        return houseworkService.ongoing(user.familyId(), id);
+    }
+
+    @Authenticate
     @DeleteMapping("/{id}")
     public void deleteHousework(@RequestUser CurrentUser user, @PathVariable int id) {
         houseworkService.delete(user.familyId(), id);

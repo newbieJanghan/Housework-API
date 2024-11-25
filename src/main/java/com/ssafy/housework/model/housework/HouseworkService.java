@@ -65,6 +65,17 @@ public class HouseworkService {
         return houseworkDao.selectOne(id);
     }
 
+    public Housework ongoing(int familyId, int id) {
+        Housework housework = this.getOne(familyId, id);
+        housework.setDoneAt(null);
+
+        int result = houseworkDao.update(housework);
+        if (result == 0) {
+            throw new ResourceNotFoundException("Failed to update housework with id: " + id);
+        }
+
+        return houseworkDao.selectOne(id);
+    }
 
     public void delete(int familyId, int id) {
         int result = houseworkDao.deleteOfFamily(familyId, id);
