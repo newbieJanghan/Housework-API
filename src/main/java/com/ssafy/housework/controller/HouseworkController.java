@@ -3,10 +3,12 @@ package com.ssafy.housework.controller;
 import com.ssafy.housework.core.auth.interceptor.annotations.Admin;
 import com.ssafy.housework.model.housework.HouseworkAdminService;
 import com.ssafy.housework.model.housework.dto.Housework;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Housework", description = "가사를 관리하는 API")
 @RestController
 @RequestMapping("/houseworks")
 public class HouseworkController {

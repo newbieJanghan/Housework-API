@@ -9,15 +9,16 @@ import com.ssafy.housework.model.housework.dto.Housework;
 import com.ssafy.housework.model.housework.dto.HouseworkCreate;
 import com.ssafy.housework.model.housework.dto.HouseworkQuery;
 import com.ssafy.housework.model.housework.dto.HouseworkUpdate;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Family Housework", description = "가족의 가사를 관리하는 API")
 @RestController
 @RequestMapping("/family-houseworks")
 public class FamilyHouseworkController {
     private final HouseworkService houseworkService;
-
 
     public FamilyHouseworkController(HouseworkService houseworkService) {
         this.houseworkService = houseworkService;
@@ -32,22 +33,18 @@ public class FamilyHouseworkController {
     @Authenticate
     @GetMapping
     public List<Housework> getAllHouseworks(@RequestUser CurrentUser user, @RequestParam(required = false) Integer assignedUserId, DateQueryParams dateQuery) {
-        System.out.println(dateQuery);
         return houseworkService.query(new HouseworkQuery(user.familyId(), assignedUserId, dateQuery.from(), dateQuery.to()));
     }
 
     @Authenticate
     @PostMapping
     public Housework createHousework(@RequestUser CurrentUser user, @RequestBody HouseworkCreate houseworkCreate) {
-        // TODO. if handling request body error can be done at advice, validate method can be removed
-//        houseworkCreate.validate();
         return houseworkService.create(user.familyId(), user.id(), houseworkCreate);
     }
 
     @Authenticate
     @PatchMapping("/{id}")
     public Housework updateHousework(@RequestUser CurrentUser user, @PathVariable int id, @RequestBody HouseworkUpdate houseworkUpdate) {
-//        houseworkUpdate.validate();
         return houseworkService.update(user.familyId(), id, houseworkUpdate);
     }
 

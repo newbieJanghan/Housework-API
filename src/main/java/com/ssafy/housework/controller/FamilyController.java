@@ -8,10 +8,12 @@ import com.ssafy.housework.core.auth.interceptor.resolvers.RequestUser;
 import com.ssafy.housework.model.family.FamilyService;
 import com.ssafy.housework.model.family.dto.Family;
 import com.ssafy.housework.model.family.dto.FamilyUpdate;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Family", description = "가족을 관리하는 API")
 @RestController
 @RequestMapping("/families")
 public class FamilyController {

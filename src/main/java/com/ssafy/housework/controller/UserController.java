@@ -9,10 +9,12 @@ import com.ssafy.housework.model.user.UserService;
 import com.ssafy.housework.model.user.dto.User;
 import com.ssafy.housework.model.user.dto.UserInfo;
 import com.ssafy.housework.model.user.dto.UserInfoUpdate;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "User", description = "사용자를 관리하는 API")
 @RestController
 @RequestMapping("/users")
 public class UserController {

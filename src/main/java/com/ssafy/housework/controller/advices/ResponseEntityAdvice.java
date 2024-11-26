@@ -23,6 +23,15 @@ public class ResponseEntityAdvice implements ResponseBodyAdvice<Object> {
                                   Class<? extends HttpMessageConverter<?>> selectedConverterType,
                                   ServerHttpRequest request, ServerHttpResponse response) {
 
+        System.out.println("body to be written: " + body + " it's class: " + body.getClass().getName());
+
+        // Request for Swagger URI
+        String requestPath = request.getURI().getPath();
+        if (requestPath.startsWith("/swagger-ui/") || requestPath.startsWith("/v3/api-docs/swagger-config")) {
+            return body;
+        }
+
+        // DELETE REQUEST respond no content
         if (request.getMethod().equals(HttpMethod.DELETE)) {
             return ResponseEntity.noContent().build();
         }
