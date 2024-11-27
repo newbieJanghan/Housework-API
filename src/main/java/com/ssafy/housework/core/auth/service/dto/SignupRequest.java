@@ -9,7 +9,7 @@ public record SignupRequest(
         String password,
         String familyName,
         String profileImageName,
-        Integer caloriesGoal
+        Integer calorieGoal
 ) {
 
     public String familyName() {
@@ -17,7 +17,7 @@ public record SignupRequest(
     }
 
     public User toUser(int familyId) {
-        return new User(this.familyId() == null ? familyId : this.familyId(), name, email, password, profileImageName, caloriesGoal);
+        return new User(this.familyId() == null ? familyId : this.familyId(), name, email, password, profileImageName, calorieGoal);
     }
 
 }
